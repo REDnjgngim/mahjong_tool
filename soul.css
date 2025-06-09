@@ -20,6 +20,9 @@ body {
 
 body div:not(input){
     position: relative;
+}
+
+img.paiimg{
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;

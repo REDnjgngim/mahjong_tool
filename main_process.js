@@ -162,7 +162,7 @@ function pairiCheck(pais) {
     }
     // 最終的な結果
     if (!settings.kind0 && !settings.kind1) {
-        // 国士無双だけの場合は良形変化ソートでエラーが出るので、国士無双の最低シャンテン数より多くする
+        // 国士無双だけの場合は受入良化ソートでエラーが出るので、国士無双の最低シャンテン数より多くする
         countsets.normal = 14;
         seventoitu = 14;
     }
