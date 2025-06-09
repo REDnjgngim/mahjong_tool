@@ -9,15 +9,20 @@ var tehai = [
 ]; // 手牌の配列：37種(0は赤、字はバッファ)
 var tehai_txt = ""; // テキスト式の手牌
 var settings = {
-    "kind0": true,
-    "kind1": true,
-    "kind2": true,
+    'gametype': true,
+    "kind0": true, "kind1": true, "kind2": true,
     "yukodisp": true,
+    "nakidisp": false,
+    "nakikind0": true, "nakikind1": true, "nakikind2": true, "nakikind3": true, "nakikind4": true, "nakikind5": true,
     "ryokedisp": true,
+    "pindisp": true,
     "order": true,
     "ripai": true
 };
-var timedebug = 0;
+var reload_flg = 0; // 何も設定を変更しない場合は無駄に処理しない
+var tehai_history = [];
+var history_index = 0; // 現在表示している手牌(添字)
+// デバッグ用変数
 var debug = 0;
 var debug2 = 0;
 //==============================================================================
@@ -25,53 +30,130 @@ var debug2 = 0;
 
 // 牌理処理セット
 function main_process() {
-    var startTime = new Date();
+    console.time('main');
     // 計算用手牌を更新して枚数を取得
     $("#yukotable").empty();
     $('#syanten_area span').html("");
     $('#syanten_area span').removeClass();
     var pais = tehai_calc_reload();
-    if (!pais || [3, 6, 9, 12].indexOf(pais) >= 0 ||
-        (!settings.kind0 && !settings.kind1 && !settings.kind2)) return;
-    var index = 0;
+    if (irregular_check(pais)) return;
     // 向聴数をチェック
-    var syantenlist = pairiCheck(pais);
-    var usedpaitype = used_paitype(tehai);
+    var tablelist = [];
+    var syantenlist = pairiCheck(pais, 13, -1, -1, true);
     syanten_output(syantenlist, pais);
     // 有効牌チェック
     if (debug) console.log("有効牌=======================================");
-    var tablelist = [[], {}];
     var min_syanten = Math.min(syantenlist[0], syantenlist[1], syantenlist[2]);
-    // if ([2, 5, 8, 11, 14].includes(pais)) { // ES2015のみ(IE11非対応)
-    // 打牌毎にチェック
-    if ([2, 5, 8, 11, 14].indexOf(pais) >= 0) {
-        for (var paiType = 0; paiType < 4; paiType++) {
-            for (var paiNo = 0; paiNo < 10; paiNo++) {
-                // 赤は黒五がないときだけ打牌候補に入れる
-                if (!tehai[paiType][paiNo] || (paiNo == 0 && tehai[paiType][5])) continue;
-                if (debug) console.log("////////////////////打 " + paiImg[paiType][paiNo].paiName);
-                tehai[paiType][paiNo]--;
-                pairiCheck2(tablelist, min_syanten, pais, paiType, paiNo);
-                if (tablelist[0][index] && settings.ryokedisp){
-                    tablelist[0][index].ryokelist = nextmain_process(min_syanten, pais, usedpaitype, paiType, paiNo);
-                    index++;
+    if(min_syanten >= 0){
+        // 1. 打牌毎に有効牌をチェック
+        // if ([2, 5, 8, 11, 14].includes(pais)) { // ES2015のみ(IE11非対応)
+        if ([2, 5, 8, 11, 14].indexOf(pais) >= 0) {
+            for (var paiType = 0; paiType < 4; paiType++) {
+                for (var paiNo = 0; paiNo < 10; paiNo++) {
+                    if (gametype3pai(paiType, paiNo)) continue;
+                    // 赤は黒五がないときだけ打牌候補に入れる
+                    if (!tehai[paiType][paiNo] || (paiNo == 0 && tehai[paiType][5])) continue;
+                    if (debug) console.log("////////////////////打 " + paiImg[paiType][paiNo].paiName);
+                    tehai[paiType][paiNo]--;
+                    pais--;
+                    // 戻り値は[params, 有効牌テーブル]
+                    let yukoresult = pairiCheck(pais, min_syanten, paiType, paiNo, false);
+                    if (yukoresult.length > 1){
+                        tablelist.push(param_default());
+                        let index = tablelist.length - 1;
+                        tablelist[index].param = yukoresult[0];
+                        tablelist[index].yukotable = yukoresult[1];
+                        // イーシャンテン以下は鳴ける
+                        if (syantenlist[0] > 0 && settings.nakidisp) {
+                            let nakiresult = nakiyukoCheck(pais, tablelist, syantenlist[0], index);
+                            tablelist[index].param.nakicount = nakiresult[0];
+                            tablelist[index].nakitable = nakiresult[1];
+                        }
+                    }
+                    pais++;
+                    tehai[paiType][paiNo]++;
+                    if (debug) console.log(tablelist);
                 }
-                tehai[paiType][paiNo]++;
+            }
+        } else { // 打牌候補がないので現在の手牌で有効牌を算出
+            let yukoresult = pairiCheck(pais, min_syanten, -1, -1, false);
+            tablelist.push(param_default());
+            let index = tablelist.length - 1;
+            tablelist[index].param = yukoresult[0];
+            tablelist[index].yukotable = yukoresult[1];
+            if (syantenlist[0] > 0 && settings.nakidisp) {
+                let nakiresult = nakiyukoCheck(pais, tablelist, syantenlist[0], index);
+                tablelist[index].param.nakicount = nakiresult[0];
+                tablelist[index].nakitable = nakiresult[1];
+            }
+            if (debug) console.log(tablelist);
+        }
+        // 多い順にソートを掛ける
+        tablelist.sort(function (a, b) {
+            // 有効牌枚数＞有効牌種枚数
+            return b.param.nocount - a.param.nocount || b.param.typecount - a.param.typecount;
+        });
+        // 2. 有効牌毎に受入良化する牌をチェック(一番多い有効牌よりも増えたら対象)
+        if (settings.ryokedisp) {
+            if (debug) console.log("受入良化=====================================");
+            // 現時点の手牌で最大のN種N牌をメモ
+            var maxTypecount = tablelist[0].param.typecount, maxNocount = tablelist[0].param.nocount;
+            for (let id = 0; id < tablelist.length; id++) {
+                if (debug) console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\打 " + tablelist[id].param.img);
+                // 戻り値は受入良化する[牌種, 枚数, テーブル]の3つ
+                let ryokeresult = nextmain_process(tablelist, min_syanten, pais, id, maxTypecount, maxNocount);
+                if (ryokeresult.length > 1) {
+                    tablelist[id].param.ryoketypecount = ryokeresult[0];
+                    tablelist[id].param.ryokenocount = ryokeresult[1];
+                    tablelist[id].ryoketable = ryokeresult[2];
+                }
+                // 受入良化は聴牌でも鳴ける
+                if (syantenlist[0] >= 0 && settings.nakidisp) {
+                    let nakiresult = nakiryokeCheck(pais, tablelist, syantenlist[0], id, maxTypecount, maxNocount);
+                    tablelist[id].param.ryokenakicount = nakiresult[0];
+                    tablelist[id].ryokenakitable = nakiresult[1];
+                }
             }
         }
-    } else { // 打牌候補がないので現在の手牌で有効牌を算出
-        pairiCheck2(tablelist, min_syanten, pais, -1, -1);
-        if (tablelist[0][index] && settings.ryokedisp) {
-            tablelist[0][index].ryokelist = nextmain_process(min_syanten, pais, usedpaitype, "", "");
-            index++;
-        }
+        if (min_syanten >= 0) yukohai_output(tablelist, min_syanten);
     }
-    if (min_syanten >= 0) yukohai_output(tablelist);
-    var endTime = new Date();
-    if (timedebug) console.log('経過時間：' + (endTime.getTime() - startTime.getTime()) + 'ミリ秒');
+    console.timeEnd('main');
+    tehai_history_write(min_syanten, syantenlist, tablelist, pais);
+    reload_flg = 0;
 }
 
 // ==============================================================
+// 今後牌理処理をする変数が増えるのに対応するため、最初に一括で変数を代入してエラーを防ぐ
+function param_default() {
+    var table = {};
+    table.param = {};
+    table.yukotable = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+    table.nakitable = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+    table.ryoketable = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+    table.ryokenakitable = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+    return table;
+}
+
 // 向聴数を反映
 function syanten_output(s, pais) {
     let syanten;
@@ -117,153 +199,395 @@ function syanten_output(s, pais) {
     }
 }
 
-// 良形手替わりになる可能性のあるツモ(孤立牌のくっつき牌)をリスト化する
-function tumokohocheck() {
-    var tempTehai = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0]
-    ];
-    var yukohaitable = yukoupai_table();
-    for (var paiNo = 1; paiNo < 8; paiNo++) {
-        if (!tehai[3][paiNo] || tempTehai[3][paiNo]) continue;
-        tempTehai[3][paiNo]++;
-    }
-    for (var paiType = 0; paiType < 3; paiType++) {
-        for (var paiNo = 0; paiNo < 10; paiNo++) {
-            if (!tehai[paiType][paiNo]) continue;
-            var list = yukohaitable["-" + paiNo];
-            for (var i = 0; i < yukohaitable["-" + paiNo].length; i++) {
-                if (tempTehai[paiType][list[i]]) continue;
-                tempTehai[paiType][list[i]]++;
-            }
-        }
-    }
-    return tempTehai;
-}
-
 // 有効牌を表示
-function yukohai_output(tablelist) {
+function yukohai_output(tablelist, min_syanten) {
     if (debug) console.log(tablelist);
-    // 受入良化込でソートしつつ受入良化用の手牌フラグを作成
-    tablelist_sort(tablelist);
-    for (var id = 0; id < tablelist[0].length; id++){
+    // 受入良化や鳴き牌込みでソート
+    if(settings.nakidisp){
+        tablelist.sort(function (a, b) {
+            // 有効牌枚数＞有効牌種枚数＞受入良化枚数＞受入良化牌種
+            return (b.param.nocount + b.param.nakicount) - (a.param.nocount + a.param.nakicount) || b.param.typecount - a.param.typecount || (b.param.ryokenocount + b.param.ryokenakicount) - (a.param.ryokenocount + a.param.ryokenakicount) || b.param.ryoketypecount - a.param.ryoketypecount;
+        });
+    } else {
+        tablelist.sort(function (a, b) {
+            // 有効牌枚数＞有効牌種枚数＞受入良化枚数＞受入良化牌種
+            return b.param.nocount - a.param.nocount || b.param.typecount - a.param.typecount || b.param.ryokenocount - a.param.ryokenocount || b.param.ryoketypecount - a.param.ryoketypecount;
+        });
+    }
+    // 上から順にテーブルを作成
+    for (var id = 0; id < tablelist.length; id++){
+        let dapai = tablelist[id];
         // 最初に良形手替わりになる牌を探す
-        var yukopais = "", ryokepais = "";
+        var yukopais = "", ryokepais = "", header = "";
+        if (min_syanten == 0) dapai.param.nakicount = 0; // 聴牌時の有効牌 = 和了
         // 打牌のヘッダー
-        var header = "<tr class='table_header'><td>打：" + "<img class='paiimg pai" + tablelist[0][id].css + "' src='./pie_img/" + tablelist[0][id].img + ".png'><br>有効牌：" + tablelist[0][id].typecount + "種" + tablelist[0][id].nocount + "枚";
-        if (settings.ryokedisp) header += " / 受入良化：" + tablelist[0][id].ryoketypecount + "種" + tablelist[0][id].ryokenocount + "枚";
+        if (settings.nakidisp) {
+            var header = "<tr class='table_header'><td>打：" + "<img class='paiimg pai" + dapai.param.css + "' src='./pie_img/" + dapai.param.img + ".png'><br>実質有効牌：" + dapai.param.typecount + "種" + dapai.param.nocount + "<span class='nakicount'>+" + dapai.param.nakicount + "</span>枚";
+            if (settings.ryokedisp) header += " / 実質受入良化：" + dapai.param.ryoketypecount + "種" + dapai.param.ryokenocount + "<span class='nakicount'>+" + dapai.param.ryokenakicount + "</span>枚";
+        } else {
+            var header = "<tr class='table_header'><td>打：" + "<img class='paiimg pai" + dapai.param.css + "' src='./pie_img/" + dapai.param.img + ".png'><br>有効牌：" + dapai.param.typecount + "種" + dapai.param.nocount + "枚";
+            if (settings.ryokedisp) header += " / 受入良化：" + dapai.param.ryoketypecount + "種" + dapai.param.ryokenocount + "枚";
+        }
         $("#yukotable").append(header + "</td></tr>");
         if (!settings.yukodisp) continue;
         for (var paiType = 0; paiType < 4; paiType++) {
             for (var paiNo = 1; paiNo < 10; paiNo++) {
+                yukopais += "<div class='paiset'>";
+                if (settings.ryokedisp) ryokepais += "<div class='paiset'>";
+                let yukonakicoef = "", ryokenakicoef = "";
                 if (settings.order) {
                     // 有効牌画像を追加
-                    if (tablelist[1][tablelist[0][id].index][paiType][paiNo]) yukopais += "<img class='paiimg pai" + paiType + paiNo + "' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
-                    if (!settings.ryokedisp) continue; // 受入良化牌表示しない
-                    // 良形手替わり牌を追加
-                    if (tablelist[0][id].ryoketehai[paiType][paiNo]) ryokepais += "<img class='paiimg pai" + paiType + paiNo + " ryoke' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
+                    if (settings.nakidisp && min_syanten > 0 && dapai.nakitable[paiType][paiNo] > 0) yukonakicoef = "<img class='nakipai' src='./img/pai" + dapai.nakitable[paiType][paiNo] + ".png'>";
+                    if (dapai.yukotable[paiType][paiNo]) yukopais += yukonakicoef + "<img class='paiimg pai" + paiType + paiNo + "' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
+                    // 受入良化牌を追加
+                    if (settings.ryokedisp && settings.nakidisp && dapai.ryokenakitable[paiType][paiNo] > 0) ryokenakicoef += "<img class='nakipai' src='./img/pai" + dapai.ryokenakitable[paiType][paiNo] + ".png'>";
+                    if (settings.ryokedisp && dapai.ryoketable[paiType][paiNo]) ryokepais += ryokenakicoef + "<img class='paiimg pai" + paiType + paiNo + " shadow' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
                 } else {
                     // 有効牌画像を追加
-                    if (tablelist[1][tablelist[0][id].index][paiType][paiNo]) yukopais += "<img class='paiimg pai" + paiType + paiNo + "' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
-                    if (!settings.ryokedisp) continue; // 受入良化牌表示しない
-                    // 良形手替わり牌を追加
-                    if (tablelist[0][id].ryoketehai[paiType][paiNo]) yukopais += "<img class='paiimg pai" + paiType + paiNo + " ryoke' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
+                    if (settings.nakidisp && min_syanten > 0 && dapai.nakitable[paiType][paiNo] > 0) yukonakicoef = "<img class='nakipai' src='./img/pai" + dapai.nakitable[paiType][paiNo] + ".png'>";
+                    if (dapai.yukotable[paiType][paiNo]) yukopais += yukonakicoef + "<img class='paiimg pai" + paiType + paiNo + "' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
+                    // 受入良化牌を追加
+                    if (settings.ryokedisp && settings.nakidisp && dapai.ryokenakitable[paiType][paiNo] > 0) ryokenakicoef += "<img class='nakipai' src='./img/pai" + dapai.ryokenakitable[paiType][paiNo] + ".png'>";
+                    // 受入良化牌もそのまま有効牌にくっつける
+                    if (settings.ryokedisp && dapai.ryoketable[paiType][paiNo]) yukopais += ryokenakicoef + "<img class='paiimg pai" + paiType + paiNo + " shadow' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
                 }
+                yukopais += "</div>";
+                if (settings.ryokedisp) ryokepais += "</div>";
             }
         }
         if (ryokepais != "" && settings.ryokedisp && settings.order) {
-            yukopais += "<br>" + ryokepais;
+            if (/img/.test(ryokepais)) yukopais += "<br>" + ryokepais;
         }
         $("#yukotable").append("<tr class='table_data'><td>" + yukopais + "</td></tr>");
     }
 }
 
+// ==============================================================
 // もう一つ先の手牌も評価して受入良化となるかをチェックする
-function nextmain_process(min_syanten, pais, usedpaitype, daType, daNo) {
-    var list = [];
-    // 有効牌確認後、ツモによって受入良化する牌があるかチェック
+function nextmain_process(tablelist, ms, pais, idx, mtc, mnc) {
+    // var list = [[], []]; // [[良形有効牌], [鳴き有効牌]]
+    var yukohaitable = yukoupai_table();
+    // 受入良化牌の枚数は元の手牌基準のため、最初に一時保管する
+    var tempTehai = JSON.parse(JSON.stringify(tehai));
+    moveReddora(tempTehai);
+    var ryoketable = [ //　表示フラグ
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+    var types = 0, counts = 0;
+    // 打牌で必要な値をセット
+    var dapai = tablelist[idx].param.index.split("")// dapai[2] = paiType, dapai[1] = paiNo
+    var yukopai = tablelist[idx].yukotable;
+    if (tablelist[idx].param.index != "d03") tehai[dapai[2]][dapai[1]]--;
+    pais--;
+    // 手牌N打→Nツモ
     for (var paiType = 0; paiType < 4; paiType++) {
-        // その牌種が1つもない場合はせいぜい良くて単騎待ちで明白なので、処理軽減を優先してカットする
-        if (debug) console.log("牌種", paiType, "使用可否", usedpaitype[paiType]);
-        if (!usedpaitype[paiType]) continue;
         for (var paiNo = 1; paiNo < 10; paiNo++) {
-            if (paiType == 3 && (paiNo > 7 || paiNo == 0)) continue;
-            if ((paiType == daType && paiNo == daNo)) continue; // 打牌をまたツモるのは不要
-            // ツモ候補がない場合は全部、ある場合は孤立単騎待ちの受入良化以外を全て抽出
-            var tablelist = [[], {}];
-            tehai[paiType][paiNo]++;
+            // ツモできるか色々チェック
+            if (gametype3pai(paiType, paiNo)) continue; // 三麻は萬子2～8牌を使用できない
+            if ((paiType == dapai[2] && paiNo == dapai[1])) continue; // 初手手牌の打牌をまたツモるのは不要
+            if (yukopai[paiType][paiNo] > 0) continue; // 有効牌なので受入良化牌になりえない
+            if (tehai[paiType][paiNo] == 4) continue; // 4枚使い切ってるので判定不可
+            if (paiType == 3 && paiNo > 7) continue;
+            if (followpai_check(paiType, paiNo, yukohaitable)) continue;
+            // ------------
+            tehai[paiType][paiNo]++; // 任意の牌Nをツモ
+            pais++;
             if (debug) console.log("**********ツモ", paiImg[paiType][paiNo].paiName);
-            for (var paiType2 = 0; paiType2 < 4; paiType2++) {
+            next_tumo: for (var paiType2 = 0; paiType2 < 4; paiType2++) {
                 for (var paiNo2 = 0; paiNo2 < 10; paiNo2++) {
                     // 赤は黒五がないときだけ打牌候補に入れる
                     if (!tehai[paiType2][paiNo2] || (paiNo == 0 && tehai[paiType2][5])) continue;
+                    if ((paiType2 == paiType && paiNo2 == paiNo)) continue; // 一手先手牌のツモをまた打牌する必要なし
                     if (debug) console.log("/////1巡先 打 " + paiImg[paiType2][paiNo2].paiName);
                     tehai[paiType2][paiNo2]--;
-                    pairiCheck2(tablelist, min_syanten, pais, paiType, paiNo);
+                    pais--;
+                    let result = pairiCheck(pais, ms, paiType2, paiNo2, false); // 向聴が進む打牌があればチャンス
+                    pais++;
                     tehai[paiType2][paiNo2]++;
+                    if (result.length > 1) { // 一手先手牌もシャンテン数が進む有効牌がある
+                        // 初手手牌より一手先手牌のほうが有効牌種数、または有効枚数が多かったら受入良化牌として使える
+                        if ((mtc <= result[0].typecount && mnc < result[0].nocount) ||
+                            (mtc < result[0].typecount && mnc <= result[0].nocount)) {
+                            types++;
+                            counts += 4 - tempTehai[paiType][paiNo]; // 初手手牌基準で枚数を加算
+                            ryoketable[paiType][paiNo] = (4 - tempTehai[paiType][paiNo]); // 表示フラグ(一応元の値をそのまま突っ込む)
+                            break next_tumo; // これ以上同じツモを調べる必要はなし
+                        }
+                    }
                 }
             }
-            if (tablelist[0].length){
-                tablelist[0].sort(function (a, b) {
-                    return b.nocount - a.nocount || b.typecount - a.typecount;
-                });
-                // 種類が増える、もしくは枚数が増えた場合は
-                list.push(tablelist[0].shift());
-                if (debug) console.log(list[list.length-1]);
-            }
+            pais--;
             tehai[paiType][paiNo]--;
         }
     }
-    return list;
+    pais++;
+    if (tablelist[idx].param.index != "d03") tehai[dapai[2]][dapai[1]]++;
+    return [types, counts, ryoketable];
 }
 
-// 良形手替わり牌も全部ひっくるめてソートを掛ける
-function tablelist_sort(t) {
-    t[0].sort(function (a, b) {
-        // 有効牌枚数＞有効牌種枚数＞受入良化枚数＞受入良化牌種
-        return b.nocount - a.nocount || b.typecount - a.typecount;
-    });
-    if (!settings.ryokedisp) return; // 表示しない
-    var maxTypecount = t[0][0].typecount, maxNocount = t[0][0].nocount;
-    for (var id = 0; id < t[0].length; id++) {
-        // 最初に良形手替わりになる牌を探す
-        var ryokeTypec = 0, ryokeNoc = 0;
-        var ryoketehai = [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0]
-        ];
-        var tempTehai = JSON.parse(JSON.stringify(tehai)); // 赤牌なしにする
-        moveReddora(tempTehai);
-        // 受入良化の枚数チェック
-        for (var pai = 0; pai < t[0][id].ryokelist.length; pai++) {
-            let pais = t[0][id].ryokelist[pai].index.split("");
-            if (debug) console.log("打:", t[0][id].img, "ツモ:", t[0][id].ryokelist[pai].img);
-            if (debug) console.log("maxtype:", maxTypecount, "maxno:", maxNocount, "typecount:", t[0][id].ryokelist[pai].typecount, "nocount:", t[0][id].ryokelist[pai].nocount);
-            if ((maxTypecount <= t[0][id].ryokelist[pai].typecount && maxNocount < t[0][id].ryokelist[pai].nocount) ||
-                (maxTypecount < t[0][id].ryokelist[pai].typecount && maxNocount <= t[0][id].ryokelist[pai].nocount)) {
-                // シャンテンが進む牌は有効牌なので却下、4枚使ってた場合も不要
-                if ((!t[1][t[0][id].index][pais[2]][pais[1]]) && (4 - tempTehai[pais[2]][pais[1]] > 0)) {
-                    ryokeTypec++;
-                    ryokeNoc += 4 - tempTehai[pais[2]][pais[1]]; // 現在の手牌基準で枚数を引く
-                    ryoketehai[pais[2]][pais[1]]++;
+// 有効牌で向聴数が減るかチェック、向聴数が減ったら鳴きの対象になる
+function nakiyukoCheck(p, t, ms, idx) {
+    var nakitable = [ // チー = 2、ポン = 4)
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+    var counts = 0;
+    var dapai = t[idx];
+    for (var paiType = 0; paiType < 4; paiType++) {
+        var redflg = 0;
+        if (tehai[paiType][0]) {
+            // 赤牌は一時的に移動
+            redflg = 1;
+            tehai[paiType][0]--;
+            tehai[paiType][5]++;
+        }
+        for (var paiNo = 1; paiNo < 10; paiNo++) {
+            if (!dapai.yukotable[paiType][paiNo]) continue; // 有効牌か確認
+            if (nakikindcheck(paiType, paiNo)) continue;
+            var capture_syanten = [];
+            let nakiadd = 0;
+            if (debug) console.log("鳴き有効牌", paiImg[paiType][paiNo].paiName);
+            // 鳴ける対子があるか確認
+            if ((tehai[paiType][paiNo] == 2 || tehai[paiType][paiNo] == 3)) { // ポン材があるとき
+                if (debug) console.log("対子：", paiImg[paiType][paiNo].paiName);
+                tehai[paiType][paiNo] -= 2;
+                p -= 2;
+                // 特定ブロックを除いてシャンテン数のみ計算
+                capture_syanten = pairiCheck(p, 8, -1, -1, true);
+                if (capture_syanten[0] < ms) { // 通常手のシャンテンでのみ判定
+                    nakitable[paiType][paiNo] = 4;
+                    counts += dapai.yukotable[paiType][paiNo] * 3;
+                    // t[0][idx].nocount += t[1][dapai][paiType][paiNo] * 3;
+                    nakiadd = 1;
+                }
+                tehai[paiType][paiNo] += 2;
+                p += 2;
+            }
+            // ポン材で先に追加してたら塔子では判定しない(塔子を拾うようにする場合はここでカットしないように)
+            if (nakiadd || paiType == 3 || !settings.gametype) continue;
+            // 鳴ける塔子があるかチェック
+            var tatulist = nakitatutable[paiNo];
+            for (var i = 0; i < tatulist.length; i++) {
+                let tl = tatulist[i];
+                if (tehai[paiType][tl[0]] && tehai[paiType][tl[1]]) {
+                    if (debug) console.log("塔子：", paiImg[paiType][tl[0]].paiName, paiImg[paiType][tl[1]].paiName);
+                    tehai[paiType][tl[0]]--;
+                    tehai[paiType][tl[1]]--;
+                    p -= 2;
+                    // 特定ブロックを除いてシャンテン数のみ計算
+                    capture_syanten = pairiCheck(p, 8, -1, -1, true);
+                    if (capture_syanten[0] < ms) { // 通常手のシャンテンでのみ判定
+                        nakitable[paiType][paiNo] = 2;
+                        counts += dapai.yukotable[paiType][paiNo];
+                        // t[0][idx].nocount += t[1][dapai][paiType][paiNo];
+                        nakiadd = 1;
+                    }
+                    tehai[paiType][tl[0]]++;
+                    tehai[paiType][tl[1]]++;
+                    p += 2;
+                    // チー材で追加したら塔子のループから抜ける
+                    if (nakiadd) break;
                 }
             }
         }
-        // 大元に設定
-        t[0][id].ryoketypecount = ryokeTypec;
-        t[0][id].ryokenocount = ryokeNoc;
-        t[0][id].ryoketehai = ryoketehai;
+        if (redflg) {
+            tehai[paiType][0]++;
+            tehai[paiType][5]--;
+        }
     }
-    // tablelist[0].sort((a, b) => b.nocount - a.nocount || b.typecount - a.typecount); // ES2015のみ(IE11非対応)
-    t[0].sort(function (a, b) {
-        // 有効牌枚数＞有効牌種枚数＞受入良化枚数＞受入良化牌種
-        return b.nocount - a.nocount || b.typecount - a.typecount || b.ryokenocount - a.ryokenocount || b.ryoketypecount - a.ryoketypecount;
-    });
+    return [counts, nakitable];
 }
+
+// 受入良化牌で有効牌が増えるかチェック、有効牌が増えたら鳴きの対象になる
+function nakiryokeCheck(p, t, ms, idx, mtc, mnc) {
+    var nakitable = [ // チー = 2、ポン = 4)
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+    var counts = 0;
+    var ryokepai = t[idx].ryoketable;
+    var dapai = t[idx].param.index.split("")// dapai[2] = paiType, dapai[1] = paiNo
+    if (t[idx].param.index != "d03") tehai[dapai[2]][dapai[1]]--;
+    p--;
+    for (var paiType = 0; paiType < 4; paiType++) {
+        var redflg = 0;
+        if (tehai[paiType][0]) {
+            // 赤牌は一時的に移動
+            redflg = 1;
+            tehai[paiType][0]--;
+            tehai[paiType][5]++;
+        }
+        for (var paiNo = 1; paiNo < 10; paiNo++) {
+            if (!ryokepai[paiType][paiNo]) continue; // 受入良化牌か確認
+            if (nakikindcheck(paiType, paiNo)) continue;
+            let nakiadd = 0;
+            if (debug) console.log("鳴き受入良化牌", paiImg[paiType][paiNo].paiName);
+            // 鳴ける対子があるか確認
+            if (tehai[paiType][paiNo] == 2 || tehai[paiType][paiNo] == 3) { // ポン材があるとき
+                if (debug) console.log("対子：", paiImg[paiType][paiNo].paiName);
+                tehai[paiType][paiNo] -= 2;
+                p -= 2;
+                // 特定ブロックを除いてシャンテン数のみ計算
+                let result = pairiCheck(p, ms, -1, -1, false);
+                if (result.length > 1) { // 同向聴数以上になればある
+                    if ((mtc <= result[0].typecount && mnc < result[0].nocount) ||
+                        (mtc < result[0].typecount && mnc <= result[0].nocount)) {
+                        nakitable[paiType][paiNo] = 4;
+                        counts += ryokepai[paiType][paiNo] * 3;
+                        nakiadd = 1;
+                    }
+                }
+                tehai[paiType][paiNo] += 2;
+                p += 2;
+            }
+            // ポン材で先に追加してたら塔子では判定しない(塔子を拾うようにする場合はここでカットしないように)
+            if (nakiadd || paiType == 3 || !settings.gametype) continue;
+            // 鳴ける塔子があるかチェック
+            var tatulist = nakitatutable[paiNo];
+            for (var i = 0; i < tatulist.length; i++) {
+                let tl = tatulist[i];
+                if (tehai[paiType][tl[0]] && tehai[paiType][tl[1]]) {
+                    if (debug) console.log("塔子：", paiImg[paiType][tl[0]].paiName, paiImg[paiType][tl[1]].paiName);
+                    tehai[paiType][tl[0]]--;
+                    tehai[paiType][tl[1]]--;
+                    p -= 2;
+                    // 特定ブロックを除いてシャンテン数のみ計算
+                    let result = pairiCheck(p, ms, -1, -1, false);
+                    if (result.length > 1) { // 同向聴数以上になればある
+                        if ((mtc <= result[0].typecount && mnc < result[0].nocount) ||
+                            (mtc < result[0].typecount && mnc <= result[0].nocount)) {
+                            nakitable[paiType][paiNo] = 2;
+                            counts += ryokepai[paiType][paiNo];
+                            nakiadd = 1;
+                        }
+                    }
+                    tehai[paiType][tl[0]]++;
+                    tehai[paiType][tl[1]]++;
+                    p += 2;
+                    // チー材で追加したら塔子のループから抜ける
+                    if (nakiadd) break;
+                }
+            }
+        }
+        if (redflg) {
+            tehai[paiType][0]++;
+            tehai[paiType][5]--;
+        }
+    }
+    p++;
+    if (t[idx].param.index != "d03") tehai[dapai[2]][dapai[1]]++;
+    return [counts, nakitable];
+}
+
+// 関連する牌だけ処理したい場合はここで先に確認
+function followpai_check(tumopT, tumopN, yukohaitable) {
+    if (settings.pindisp) return 0; // 全て表示する場合は強制的に全てOK
+    var exchange_paiType_to_txt = ["m", "p", "s", "z"];
+    for (var paiType = 0; paiType < 3; paiType++) {
+        if (!(tehai[tumopT].indexOf(1) >= 0 || tehai[tumopT].indexOf(1) >= 0 ||
+            tehai[tumopT].indexOf(2) >= 0 || tehai[tumopT].indexOf(3) >= 0)) {
+            // 関連牌を持ってないので省略
+            continue;
+        }
+        let yukohais = yukohaitable["-" + tumopN + exchange_paiType_to_txt[tumopT]];
+        if (debug) console.log("ツモ牌: -" + tumopN + exchange_paiType_to_txt[tumopT]);
+        if (debug) console.log(yukohais);
+        for (var yukoNo = 0; yukoNo < yukohais.length; yukoNo++) {
+            // ツモに影響のある牌が手牌にあるので処理開始
+            if (tehai[tumopT][yukohais[yukoNo]] >= 1) return 0;
+        }
+    }
+    return 1;
+}
+
+// ==============================================================
+// 手牌を更新し終わったらその処理結果を一時保持しておく
+function tehai_history_write(ms, sl, tl, p) {
+    // 過去の手牌にいるときに処理したらそれより新しいものは全消し
+    if (history_index > 0) {
+        tehai_history.splice(0, history_index);
+        history_index = 0;
+    }
+    // 牌画テキストを整形
+    var paiList = exchange_txt_to_paiga(tehai_txt);
+    paiList = tehai_sort(paiList[0], paiList[1]);
+    var txt = exchange_paiga_to_txt(paiList[0], paiList[1]);
+    tehai_history.unshift({
+        "min_syanten": ms,
+        "syantenlist": sl,
+        "tablelist": tl,
+        "tehai": tehai,
+        "tehai_txt": txt,
+        "pais": p
+    });
+    // 保存可能数を超えたら後ろから削除
+    if (tehai_history.length > 20) {
+        tehai_history.pop();
+    }
+    history_button_reload();
+}
+
+// 戻る進むボタンの表示判定
+function history_button_reload() {
+    // 戻るボタン
+    if (tehai_history.length >= 2 && history_index + 1 != tehai_history.length) {
+        // 2個以上あって一番古い手牌でなければアクティブ
+        $("#before_button").css("filter", "grayscale(0)");
+        $("#before_button").css("cursor", "pointer");
+    } else {
+        $("#before_button").css("filter", "grayscale(100)");
+        $("#before_button").css("cursor", "default");
+    }
+    // 進むボタン
+    if (history_index != 0) {
+        // 最新の手牌でなければアクティブ
+        $("#after_button").css("filter", "grayscale(0)");
+        $("#after_button").css("cursor", "pointer");
+    } else {
+        $("#after_button").css("filter", "grayscale(100)");
+        $("#after_button").css("cursor", "default");
+    }
+}
+
+// 保存している手牌を表示
+function tehaimobe(move) {
+    if (0 <= history_index + move && history_index + move < tehai_history.length) {
+        // 過去の手牌を代入
+        var t = tehai_history[history_index + move];
+        history_index += move;
+        $("#yukotable").empty();
+        $('#syanten_area span').html("");
+        $('#syanten_area span').removeClass();
+        // 手牌状況を復活
+        tehai = [];
+        tehai = JSON.parse(JSON.stringify(t.tehai));
+        // 手牌表示を復活
+        tehai_txt = t.tehai_txt;
+        $("#tehaitxt").val(tehai_txt);
+        var paiList = exchange_txt_to_paiga(tehai_txt);
+        paiList = tehai_sort(paiList[0], paiList[1]);
+        $("#paiTehai").empty();
+        $("#paiTehai").append(paiimg_Output(paiList[0], paiList[1]));
+        // シャンテン数を再表示
+        syanten_output(t.syantenlist, t.pais);
+        // 有効牌を再表示
+        if (t.min_syanten >= 0) yukohai_output(t.tablelist);
+        history_button_reload();
+    }
+}
+
+// 設定が変更されたら都度更新する
+$(document).on("click", "form input", function () {
+    setings_reload($(this).attr("name"), 1);
+    reload_flg = 1;
+});
 
 // ==============================================================
 // ポップアップウィンドウ表示
@@ -274,8 +598,8 @@ function popup_window(flg) {
     $("#close_button").remove();
     $("#menu div p").removeClass("open");
     if (flg == 0 || flg == Wno) {
-        if (Wno == 2 && settings.ripai) tehai_reload();
-        main_process();
+        // if (Wno != 3 && settings.ripai) tehai_reload();
+        if (reload_flg) main_process();
         Wno = 0;
         if (debug) console.log(settings);
         return;
@@ -379,7 +703,6 @@ function tehai_reload() {
         if (!t_txt.match(/[mpsz]$/)) t_txt += tumo[1]; // 連番だった場合はpaiTypeをつけ直す
     }
     // var [paiTypelist, paiNolist] = exchange_txt_to_paiga(t_txt); // ES2015のみ(IE11非対応)
-    // [paiTypelist, paiNolist] = exchange_txt_to_paiga(t_txt); // ES2015のみ(IE11非対応)
     var paiList = exchange_txt_to_paiga(t_txt);
     paiList = tehai_sort(paiList[0], paiList[1]);
     $("#paiTehai").empty();
@@ -397,6 +720,7 @@ function tehai_reload() {
             $("#tehaitxt").val(txt + tumo[0] + tumo[1]);
             tehai_txt = txt + tumo[0] + tumo[1];
         }
+        reload_flg = 1;
     }
 }
 
@@ -408,7 +732,9 @@ $(document).on("click", "#popup .scroll_area div:not(#tehai_ex) > .paiimg", func
     // var [paiType, paiNo] = pai_class(this); // ES2015のみ(IE11非対応)
     var pai = pai_class(this);
     // 牌の個数があってるかチェック
-    if (pai[1] == 0) {
+    if (gametype3pai(pai[0], pai[1])) {
+        return;
+    } else if (pai[1] == 0) {
         // 既に赤牌が入力されていないかチェック
         if (tehai[pai[0]][0] == 1 || tehai[pai[0]][5] == 4) return;
     } else if (pai[1] == 5 && Number(pai[0]) < 3) {
@@ -436,6 +762,7 @@ $(document).on("click", "#reset_button", function () {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0]
     ];
+    reload_flg = 1;
 });
 
 // 手牌自動作成ボタン
@@ -454,6 +781,7 @@ $(document).on("click", "#tehai_make_button", function () {
     $("#tehaitxt").val(txt);
     tehai_txt = txt;
     tehai_calc_reload();
+    reload_flg = 1;
 });
 
 // 手牌の牌画を選択して削除、有効牌の打牌を選択して手を進める
@@ -473,6 +801,7 @@ $(document).on("click", "#paiTehai .paiimg, #yukohai_area tr:nth-of-type(2n+1) i
         var txt = !paiList[0].length ? "" : exchange_paiga_to_txt(paiList[0], paiList[1]);
         $("#tehaitxt").val(txt);
         tehai_txt = txt;
+        reload_flg = 1;
     } else if (!$("#popup").length) {
         var pais = tehai_calc_reload();
         makePaiYama(); // 手牌作成しないと山ができないので仕方なくここでも呼ぶ
@@ -493,14 +822,14 @@ $(document).on("click", "#paiTehai .paiimg, #yukohai_area tr:nth-of-type(2n+1) i
             // ポップアップが表示されていないときは何切る中なので手を進める
             let flg = 0;
             do {
-                var index = Rand(135);
+                var index = Rand(yama.length - 1);
                 // var [paiType, paiNo] = [paiData[yama[index]].paiType, paiData[yama[index]].paiNo]; // ES2015のみ(IE11非対応)
                 var pai = [paiData[yama[index]].paiType, paiData[yama[index]].paiNo];
                 // ツモ条件を満たしていたらOK
-                if (!((pai[1] == 0 && tehai[pai[0]][0] == 1 || tehai[pai[0]][5] == 4) ||
-                    (pai[1] == 5 && Number(pai[0]) < 3 && tehai[pai[0]][0] + tehai[pai[0]][5] == 4) ||
-                    (tehai[pai[0]][pai[1]] == 4))
-                ) {
+                if (!((pai[1] == 0 && tehai[pai[0]][0] == 1 || tehai[pai[0]][5] == 4) || // 赤5ツモのとき、既に使用済みか5が4枚あるとき
+                    (pai[1] == 5 && Number(pai[0]) < 3 && tehai[pai[0]][0] + tehai[pai[0]][5] == 4) || // 黒5ツモのとき、赤と合わせて4枚あるとき
+                    (tehai[pai[0]][pai[1]] == 4) || // その牌が4枚あるとき
+                    (gametype3pai(pai[0], pai[1])))) { // 三麻かつ2～8の萬子だったとき
                     flg = 1;
                 }
             } while (flg == 0);
@@ -527,8 +856,8 @@ $(document).on("click", "#yukohai_area tr:nth-of-type(2n) img", function () {
         var exchange_paiType_to_txt = ["m", "p", "s", "z"];
         // 打牌
         if ([2, 5, 8, 11, 14].indexOf(pais) >= 0) { // 上に表示されてる牌で打牌
-            // 気持ち悪いけど有効牌/良形手替わり牌をクリックしたらimg<td<tr-tr>td>img.classと移動して打牌を取得する
-            let pai_class = $(this).parent().parent().prev().children().children().attr("class").split(" ");
+            // 気持ち悪いけど有効牌/良形手替わり牌をクリックしたらimg<div<td<tr-tr>td>img.classと移動して打牌を取得する
+            let pai_class = $(this).parent().parent().parent().prev().children().children().attr("class").split(" ");
             $("#paiTehai ." + pai_class[1])[0].remove();
             // 牌テキストを削除
             // 牌画削除の手牌で配列を生成
@@ -558,11 +887,14 @@ $(document).on("click", "#yukohai_area tr:nth-of-type(2n) img", function () {
 
 // 手牌をTwitterに共有するボタン
 // Twitterに何切るを簡易投稿
-function twitter_post() { // 23457m2455p2467s6p335m1145p223577s1p
+function twitter_post() {
     // 改行「%0D%0A」半角スペース「%2C」左鉤括弧「%E3%80%8C」右鉤括弧「%E3%80%8D」
     var tweet_tehai = exchange_txt_to_tweet(tehai_txt);
     if (tehai_txt == "") {
         alert("手牌が入力されている場合のみ投稿できます");
+        return;
+    } else if (pairi_gametype_check()) {
+        alert("三麻は萬子の2～8牌を取り除いてる場合のみ投稿できます");
         return;
     } else if (tweet_tehai == "NG") {
         alert("手牌が2枚、5枚、8枚、11枚、14枚の場合のみ投稿できます");
@@ -578,6 +910,7 @@ function twitter_post() { // 23457m2455p2467s6p335m1145p223577s1p
     window.open(url, "post_twitter");
 }
 
+// ツイート用にわかりやすく表示を変換
 function exchange_txt_to_tweet(tehai_txt) {
     var pailist = exchange_txt_to_paiga(tehai_txt);
     var paiType_to_txt = ["m", "p", "s", ""]; // 字牌は漢字に変換済みなので必要なし
@@ -638,21 +971,45 @@ function setings_reload(elmName, flg) {
         }
         settings[elmName] = Number($("#" + name1).prop("checked"));
         // 文字色等更新
-        if (elmName == "ripai" || elmName == "yukodisp"){
-            settings[elmName] ? $("#" + name1).parent().addClass("check") : $("#" + name1).parent().removeClass("check");
-            settings[elmName] ? $("#" + name0).parent().removeClass("check") : $("#" + name0).parent().addClass("check");
-        } else { // 受入良化牌は操作が連鎖しているので別途処理
+        if (elmName == "ryokedisp") {
+            // 受入良化牌は連動型
             settings[elmName] ? $("#" + name1).parent().addClass("check") : $("#" + name1).parent().removeClass("check");
             settings[elmName] ? $("#" + name0).parent().removeClass("check") : $("#" + name0).parent().addClass("check");
             // 受入良化牌を表示しない時は有効牌と分けるかのチェックボックスを無効にする
             if (settings.ryokedisp) { // 有効
                 $("form input[name=order]").prop("disabled", false);
+                $("form input[name=pindisp]").prop("disabled", false);
                 settings.order ? $("#order1").parent().addClass("check") : $("#order0").parent().addClass("check");
+                settings.pindisp ? $("#pindisp1").parent().addClass("check") : $("#pindisp0").parent().addClass("check");
             } else { // 無効
                 $("form input[name=order]").prop("disabled", true);
+                $("form input[name=pindisp]").prop("disabled", true);
                 // 選択できないので文字色も非アクティブ
                 settings.order ? $("#order1").parent().removeClass("check") : $("#order0").parent().removeClass("check");
+                settings.pindisp ? $("#pindisp1").parent().removeClass("check") : $("#pindisp0").parent().removeClass("check");
             }
+        } else if (elmName == "nakidisp") {
+            // 鳴き牌は連動型
+            settings[elmName] ? $("#" + name1).parent().addClass("check") : $("#" + name1).parent().removeClass("check");
+            settings[elmName] ? $("#" + name0).parent().removeClass("check") : $("#" + name0).parent().addClass("check");
+            // 受入良化牌を表示しない時は有効牌と分けるかのチェックボックスを無効にする
+            if (settings.nakidisp) { // 有効
+                $("form input[name*=nakikind]").prop("disabled", false);
+                $("form input[name*=nakikind]").each(function (i, elem) {
+                    let type = elem.name;
+                    if (settings[type]) $("#" + type).parent().addClass("check");
+                });
+            } else { // 無効
+                // 選択できないので文字色も非アクティブ
+                $("form input[name*=nakikind]").prop("disabled", true);
+                $("form input[name*=nakikind]").each(function (i, elem) {
+                    let type = elem.name;
+                    if (settings[type]) $("#" + type).parent().removeClass("check");
+                });
+            }
+        } else {
+            settings[elmName] ? $("#" + name1).parent().addClass("check") : $("#" + name1).parent().removeClass("check");
+            settings[elmName] ? $("#" + name0).parent().removeClass("check") : $("#" + name0).parent().addClass("check");
         }
     }
     if (debug) console.log(settings);
@@ -661,6 +1018,7 @@ function setings_reload(elmName, flg) {
 // 設定が変更されたら都度更新する
 $(document).on("click", "form input", function () {
     setings_reload($(this).attr("name"), 1);
+    reload_flg = 1;
 });
 
 // ==============================================================
@@ -710,7 +1068,39 @@ $(document).on("click", "#longpopup div.other_header", function () {
 
 });
 
+// 三麻の手牌になってるか確認
+function pairi_gametype_check() {
+    if (!settings.gametype) {
+        // 三麻のとき、赤5か2～8牌があったら処理しない
+        for (var paiNo = 0; paiNo < 10; paiNo++) {
+            if (paiNo == 1 || paiNo == 9) continue;
+            if (tehai[0][paiNo] > 0) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
+// 処理する前に設定や手牌が問題ないか確認
+function irregular_check(pais) {
+    if (pairi_gametype_check()) {
+        $('#normal_syanten').html("三麻では萬子の2～8牌を<br>含んでいる手牌を処理できません。");
+        return 1;
+    } else if ([3, 6, 9, 12].indexOf(pais) >= 0) {
+        $('#normal_syanten').html("手牌が3枚、6枚、9枚、12枚<br>の場合は処理できません。");
+        return 1;
+    } else if (!settings.kind0 && !settings.kind1 && !settings.kind2) {
+        $('#normal_syanten').html("有効牌の設定を見直してください");
+        return 1;
+    } else if (pais <= 12 && !settings.kind0) {
+        $('#normal_syanten').html("鳴き手牌は一般形のみ処理できます");
+        return 1;
+    } else if (!pais) {
+        $('#syanten_area span:first-child').html("<br>二次箱牌理ツール");
+        return 1;
+    }
+}
 
 // ==============================================================
 // 牌テキストを牌画出力配列に変換
@@ -792,7 +1182,8 @@ function pai_class(elm) {
 
 // 良形手替わりの処理軽減用に1枚も使ってない色の数牌は判定しない
 function used_paitype(t) {
-    return [sum(t[0]) >= 1, sum(t[1]) >= 1, sum(t[2]) >= 1, sum(t[3]) >= 1];
+    // return [sum(t[0]) >= 1, sum(t[1]) >= 1, sum(t[2]) >= 1, sum(t[3]) >= 1];
+    return [1, 1, 1, 1];
 }
 
 // ==============================================================
