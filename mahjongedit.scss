@@ -1,0 +1,616 @@
+* {
+    margin: 0;
+    padding: 0px;
+    line-height: 1.5em
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    color: white;
+}
+
+body {
+    background-image: url('./img/taku.png');
+    background-size: cover;
+    background-position: bottom;
+    background-color: black;
+	height: 100%;
+	overflow: hidden; /* 画面全体のスクロール非表示 */
+}
+
+body div:not(input){
+    position: relative;
+}
+
+img.paiimg{
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+}
+
+#flame {
+    height: 100%;
+    display: flex;
+    margin: auto;
+    align-content: center;
+    flex-wrap: wrap;
+
+    >section:first-of-type{
+        display: flex;
+        margin: auto;
+        overflow: hidden;
+
+        #mainArea {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            margin: auto;
+
+            #syantenArea{
+                position: relative;
+                width: 85%;
+                top: 0.5em;
+                margin: 0 auto 0;
+                color: #e0ab67;
+                font-weight: bold;
+
+                p{
+                    position: relative;
+                    text-align: center;
+
+                    span.tenpai{
+                        color: yellow;
+                    }
+                    span.hora{
+                        color: red;
+                    }
+                }
+            }
+
+            #yukopaiArea{
+                position: relative;
+                width: 100%;
+                height: fit-content;
+                top: 10px;
+                margin: 0 auto;
+                padding-bottom: 2%;
+                overflow: auto;
+
+                div{
+                    width: 95%;
+                    padding: 2px;
+                    margin: auto;
+                }
+
+                div:nth-of-type(2n+1){
+                    margin-top: 5px;
+                    padding-left: 5px;
+                    background: radial-gradient(circle, #2e3958 0%, #2e3958 50%, #1a2f58 99%, #2e3958 100%);
+                }
+                div:nth-of-type(2n){
+                    padding-left: 5px;
+                    background-color: rgba(46, 57, 88, 0.5);
+                }
+                .paiimg{
+                    width: min(4vw, 4vh);
+                    max-width: 24px;
+                    min-width: 12px;
+                    margin: 0.2em 0 0.2em;
+                    vertical-align: bottom;
+                }
+            }
+        }
+
+        #subArea {
+            width: 100%;
+            background-color: rgba(20, 26, 48, 0.8);
+            border: 2px #c48e5d solid;
+            border-radius: 2px;
+            box-sizing: border-box;
+            box-shadow: black 2px -2px 10px 0px;
+            white-space: nowrap;
+
+            /* ----------------------- 何切るモード ----------------------- */
+            > div:first-of-type{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+
+                #allPaiList {
+                    width: fit-content;
+                    margin: 3px;
+                    font-size: 0;
+
+                    .paiimg {
+                        // max-width: 36px;
+                        width: min(7vw, 7vh, 9%);
+                        margin: 0.5%;
+
+                        &.shadow{
+                            filter: brightness(70%);
+                            cursor: default;
+                        }
+                    }
+                }
+
+                #paiEditButtons {
+                    width: min(20vw, 20vh, 20%);
+                    margin: 3px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+
+                    div:last-of-type{
+                        text-align: center;
+                        p{
+                            font-size: clamp(6px, 1vh, 16px);
+                        }
+
+                        #tehaiOutPutText{
+                            width: 90%;
+                            font-size: clamp(6px, 1vh, 16px);
+                        }
+                    }
+
+                    /* リセットボタン */
+                    #reset_button, #tehai_make_button{
+                        width: 100%;
+                        display: block;
+                    }
+
+                }
+            }
+
+
+            #paiTehai {
+                bottom: 0px;
+                width: 100%;
+                aspect-ratio: 8.7 / 1;
+                text-align: left;
+                box-shadow: inset gray 0px 0px 10px 0px;
+                font-size: 0px;
+
+                li{
+                    list-style: none;
+                    display: inline-block;
+                    font-size: 0px;
+                    width: 7%;
+
+                    &:first-child{
+                        margin-left: 0.5%;
+                    }
+                    &:nth-of-type(3n+2):last-child {
+                        margin-left: 1%;
+                    }
+
+                    .paiimg {
+                        max-width: 100%;
+                        vertical-align: bottom;
+
+                        &.shadow{
+                            filter: brightness(70%);
+                            cursor: default;
+                        }
+                    }
+
+                    &.ghost{
+                        visibility: hidden;
+                    }
+
+                    &:not(.chosen){
+                        -webkit-user-drag: none;
+                        -khtml-user-drag: none;
+                    }
+                }
+            }
+        }
+
+        #menuArea{
+            width: 100%;
+            display: flex;
+            align-items: center;
+
+            >div:not(:last-of-type){
+                margin: 3px;
+
+                flex: 1;
+                background: radial-gradient(ellipse at top, #3c5fa3 10%, #2d4475 100%);
+                clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                label{
+                    width:100%;
+                    height: 100%;
+                    padding: 1rem;
+                    color: #d4e3ff;
+                    font-weight: bold;
+                    white-space: nowrap;
+                    cursor: pointer;
+                    text-align: center;
+                }
+
+            }
+            >div:last-of-type{
+                flex: 8;
+                display: flex;
+                align-items:center;
+
+                div:nth-of-type(2){
+                    flex: 8;
+                    height: fit-content;
+                    input{
+                        width: 100%;
+                    }
+                }
+
+                div:nth-of-type(2n+1){
+
+                    img{
+                        vertical-align: middle;
+
+                        &.nonActive{
+                            filter: grayscale(100);
+                        }
+                        &:not(.nonActive){
+                            cursor: pointer;
+
+                            /* 押せるボタンをホバーしている間は少し白っぽく表示させる */
+                            &:hover{
+                                filter: brightness(130%);
+                            }
+                        }
+                    }
+                    #historyButton_before{
+                        transform: scale(-1, 1);
+                    }
+                    #historyRange{
+                        vertical-align: middle;
+                    }
+                    #historyButton_after{
+                    }
+                }
+
+            }
+        }
+    }
+
+
+    // モーダルウィンドウ
+    .modal_wrap input#trigger{
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .modal_overlay{
+        display: flex;
+        justify-content: center;
+        overflow: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        opacity: 0;
+        transition: opacity 0.2s, transform 0s 0.2s;
+        transform: scale(0);
+
+        .modal_trigger{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #modal_content{
+            align-self: center;
+            height: 80%;
+            padding: 1%;
+            box-sizing: border-box;
+            background-color: rgba(20, 26, 48, 1);
+            border: 2px #c48e5d solid;
+            border-radius: 2px;
+            box-shadow: black 0px 0px 5px 0px;
+            transform: scale(1.05);
+            transition: 0.2s;
+            overflow: auto;
+
+            & > img{
+                position: absolute;
+                right: 0;
+                width: 2em;
+                aspect-ratio: 1 / 1;
+                margin: 0.2em;
+                z-index: 10;
+            }
+
+            // 設定画面
+            #setting{
+                > p{
+                    text-align: center;
+                    padding: 0.3em 0;
+
+                    &:first-of-type{
+                        color: #e0aa6e;
+                        font-weight: 700;
+                        font-size: 1.5rem;
+                    }
+                    &:nth-of-type(2){
+                        font-size: 0.8rem;
+                    }
+                }
+
+                .settingGroup{
+                    border-top: solid 2px #2f3e62;
+                    margin-left: 1%;
+
+                    p:first-of-type{
+                        color: #e0aa6e;
+                        font-weight: bold;
+                        padding: 0.5em;
+                    }
+                    p:last-of-type{
+                        display: flex;
+                        padding-bottom: 0.5em;
+                    }
+                }
+
+                label{
+                    margin-left: 10%;
+                    color: #9aa0b1;
+
+                    &:has(input:checked){
+                        color: #cad4f7;
+                    }
+
+                    input{
+                        height: 1rem;
+                        vertical-align: middle;
+                    }
+                }
+            }
+
+            // 説明ウィンドウ
+            #info{
+                > p{
+                    text-align: center;
+                    color: #e0aa6e;
+                    font-weight: 700;
+                    font-size: 1.5rem;
+                    text-align: center;
+                    padding: 0.3em 0;
+                }
+
+                label{
+                    position: relative;
+                    display: block;
+                    background: radial-gradient(circle, #161f35 0%, #161f35 50%, #243151 99%, #2f3e62 100%);
+                    border: 2px #2f3e62 solid;
+                    color: #e9c18a;
+                    text-align: center;
+                    line-height: 2em;
+                }
+
+                label:has(+ input:checked)::after{
+                    content: "";
+                    display: inline-block;
+                    position: absolute;
+                    height: 30%;
+                    right: 3px;
+                    bottom: 3px;
+                    background-color: #5b84ce;
+                    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+                    aspect-ratio: 4 / 1;
+                }
+
+                input{
+                    display: none;
+                }
+
+                label:has(+ input:not(:checked))::after{
+                    content: "";
+                    display: inline-block;
+                    position: absolute;
+                    height: 30%;
+                    right: 3px;
+                    bottom: 3px;
+                    background-color: #5b84ce;
+                    clip-path: polygon(50% 100%, 0 0, 100% 0);
+                    aspect-ratio: 4 / 1;
+                }
+
+                input:checked + div{
+                    grid-template-rows: 1fr;
+                }
+
+                .InfoGroup{
+                    width: 90%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    display: grid;
+                    grid-template-rows: 0fr;
+                    transition: 250ms grid-template-rows ease;
+                    overflow: hidden;
+                    color: #cbc7c7;
+
+                    div{
+                        overflow: hidden;
+                    }
+
+                    .infoPng{
+                        max-width: 100%;
+                    }
+
+                    .settingName{
+                        display: inline-block;
+                        color: #e0aa6e;
+                        font-weight: bold;
+                        margin: 0.5rem 0;
+                    }
+                }
+            }
+
+            /* 赤文字 */
+            span.attention{
+                color: red;
+            }
+            /* 下線 */
+            span.bline{
+                text-decoration: underline;
+            }
+            /* 取り消し線 */
+            span.cline{
+                text-decoration: line-through;
+            }
+            /* リンク */
+            a{
+                color: lime;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    }
+
+    input:checked ~ .modal_overlay{
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 0.2s;
+
+        #modal_content{
+            transform: scale(1);
+        }
+    }
+}
+
+/* ----------------------------------------------　汎用系css ----------------------------------------------　*/
+
+#tehai_make_button, #close_button, #reset_button, #historyButton_before, #historyButton_after, .menuButton, #info label, #setting label{
+    cursor: pointer;
+
+    /* 押せるボタンをホバーしている間は少し白っぽく表示させる */
+    &:hover{
+        filter: brightness(130%);
+    }
+}
+
+#paiTehai, #allPaiList, #yukopaiArea{
+    & .paiimg{
+        cursor: pointer;
+
+        /* 押せるボタンをホバーしている間は少し白っぽく表示させる */
+        &:hover{
+            filter: brightness(130%);
+        }
+    }
+}
+
+/* 開いている箇所のポップアップボタンは文字の色を変える */
+.open{
+    color: #ffedaa;
+}
+
+/* 縦スマホ */
+@media (max-aspect-ratio: 9 / 16) {
+    *{
+        font-size: clamp(10px, 3vw, 16px);
+    }
+
+    #flame section:first-of-type {
+        width: 100%;
+        height: 100%;
+        // aspect-ratio: 9 / 16;
+        flex-direction: column;
+    }
+
+    #modal_content{
+        width: 95%;
+    }
+}
+
+/* 縦スマホ～正方形 */
+@media (min-aspect-ratio: 9 / 16) and (max-aspect-ratio: 4 / 3) {
+    *{
+        font-size: clamp(10px, 3vw, 16px);
+    }
+
+    #flame section:first-of-type {
+        height: 100%;
+        aspect-ratio: 9 / 16;
+        flex-direction: column;
+    }
+
+    #modal_content{
+        width: 80%;
+    }
+}
+
+  /* 正方形～横スマホ */
+@media (min-aspect-ratio:  4 / 3){
+    *{
+        font-size: clamp(10px, 3vh, 16px);
+    }
+
+    #flame section:first-of-type {
+        height: 100%;
+        aspect-ratio: 4 / 3;
+        flex-direction: row;
+        align-items: flex-end;
+
+        > div:first-of-type{
+            flex: 6;
+        }
+        > div:last-of-type{
+            flex: 4;
+        }
+    }
+
+    #modal_content{
+        aspect-ratio: 4 / 3;
+    }
+}
+
+  /* 横スマホ～ */
+  @media (min-aspect-ratio: 16 / 9) and (pointer: coarse) {
+    *{
+        font-size: clamp(10px, 3vh, 16px);
+    }
+
+    #flame section:first-of-type {
+        width: 100%;
+        height: 100%;
+        flex-direction: row;
+        align-items: flex-end;
+
+        > div:first-of-type{
+            flex: 6;
+        }
+        > div:last-of-type{
+            flex: 4;
+        }
+    }
+
+    #modal_content{
+        aspect-ratio: 16 / 9;
+    }
+}

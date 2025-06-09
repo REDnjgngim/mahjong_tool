@@ -156,50 +156,50 @@ function paiData() {
 function paiImg() {
     var hoge = [
         [
-            { "No": 0, "paiName": "赤五萬", "src": "0m.png" },
-            { "No": 1, "paiName": "一萬", "src": "1m.png" },
-            { "No": 2, "paiName": "二萬", "src": "2m.png" },
-            { "No": 3, "paiName": "三萬", "src": "3m.png" },
-            { "No": 4, "paiName": "四萬", "src": "4m.png" },
-            { "No": 5, "paiName": "五萬", "src": "5m.png" },
-            { "No": 6, "paiName": "六萬", "src": "6m.png" },
-            { "No": 7, "paiName": "七萬", "src": "7m.png" },
-            { "No": 8, "paiName": "八萬", "src": "8m.png" },
-            { "No": 9, "paiName": "九萬", "src": "9m.png" },
+            { "No": 0, "paiName": "赤五萬", "src": "0m.png", "text": "0m" },
+            { "No": 1, "paiName": "一萬", "src": "1m.png", "text": "1m" },
+            { "No": 2, "paiName": "二萬", "src": "2m.png", "text": "2m" },
+            { "No": 3, "paiName": "三萬", "src": "3m.png", "text": "3m" },
+            { "No": 4, "paiName": "四萬", "src": "4m.png", "text": "4m" },
+            { "No": 5, "paiName": "五萬", "src": "5m.png", "text": "5m" },
+            { "No": 6, "paiName": "六萬", "src": "6m.png", "text": "6m" },
+            { "No": 7, "paiName": "七萬", "src": "7m.png", "text": "7m" },
+            { "No": 8, "paiName": "八萬", "src": "8m.png", "text": "8m" },
+            { "No": 9, "paiName": "九萬", "src": "9m.png", "text": "9m" },
         ],
         [
-            { "No": 0, "paiName": "赤五筒", "src": "0p.png" },
-            { "No": 1, "paiName": "一筒", "src": "1p.png" },
-            { "No": 2, "paiName": "二筒", "src": "2p.png" },
-            { "No": 3, "paiName": "三筒", "src": "3p.png" },
-            { "No": 4, "paiName": "四筒", "src": "4p.png" },
-            { "No": 5, "paiName": "五筒", "src": "5p.png" },
-            { "No": 6, "paiName": "六筒", "src": "6p.png" },
-            { "No": 7, "paiName": "七筒", "src": "7p.png" },
-            { "No": 8, "paiName": "八筒", "src": "8p.png" },
-            { "No": 9, "paiName": "九筒", "src": "9p.png" },
+            { "No": 0, "paiName": "赤五筒", "src": "0p.png", "text": "0p" },
+            { "No": 1, "paiName": "一筒", "src": "1p.png", "text": "1p" },
+            { "No": 2, "paiName": "二筒", "src": "2p.png", "text": "2p" },
+            { "No": 3, "paiName": "三筒", "src": "3p.png", "text": "3p" },
+            { "No": 4, "paiName": "四筒", "src": "4p.png", "text": "4p" },
+            { "No": 5, "paiName": "五筒", "src": "5p.png", "text": "5p" },
+            { "No": 6, "paiName": "六筒", "src": "6p.png", "text": "6p" },
+            { "No": 7, "paiName": "七筒", "src": "7p.png", "text": "7p" },
+            { "No": 8, "paiName": "八筒", "src": "8p.png", "text": "8p" },
+            { "No": 9, "paiName": "九筒", "src": "9p.png", "text": "9p" },
         ],
         [
-            { "No": 0, "paiName": "赤五索", "src": "0s.png" },
-            { "No": 1, "paiName": "一索", "src": "1s.png" },
-            { "No": 2, "paiName": "二索", "src": "2s.png" },
-            { "No": 3, "paiName": "三索", "src": "3s.png" },
-            { "No": 4, "paiName": "四索", "src": "4s.png" },
-            { "No": 5, "paiName": "五索", "src": "5s.png" },
-            { "No": 6, "paiName": "六索", "src": "6s.png" },
-            { "No": 7, "paiName": "七索", "src": "7s.png" },
-            { "No": 8, "paiName": "八索", "src": "8s.png" },
-            { "No": 9, "paiName": "九索", "src": "9s.png" },
+            { "No": 0, "paiName": "赤五索", "src": "0s.png", "text": "0s" },
+            { "No": 1, "paiName": "一索", "src": "1s.png", "text": "1s" },
+            { "No": 2, "paiName": "二索", "src": "2s.png", "text": "2s" },
+            { "No": 3, "paiName": "三索", "src": "3s.png", "text": "3s" },
+            { "No": 4, "paiName": "四索", "src": "4s.png", "text": "4s" },
+            { "No": 5, "paiName": "五索", "src": "5s.png", "text": "5s" },
+            { "No": 6, "paiName": "六索", "src": "6s.png", "text": "6s" },
+            { "No": 7, "paiName": "七索", "src": "7s.png", "text": "7s" },
+            { "No": 8, "paiName": "八索", "src": "8s.png", "text": "8s" },
+            { "No": 9, "paiName": "九索", "src": "9s.png", "text": "9s" },
         ],
         [
-            { "No": 0, "paiName": "裏", "src": "0z.png" },
-            { "No": 1, "paiName": "東", "src": "1z.png" },
-            { "No": 2, "paiName": "南", "src": "2z.png" },
-            { "No": 3, "paiName": "西", "src": "3z.png" },
-            { "No": 4, "paiName": "北", "src": "4z.png" },
-            { "No": 5, "paiName": "白", "src": "5z.png" },
-            { "No": 6, "paiName": "發", "src": "6z.png" },
-            { "No": 7, "paiName": "中", "src": "7z.png" }
+            { "No": 0, "paiName": "裏", "src": "0z.png", "text": "0z" },
+            { "No": 1, "paiName": "東", "src": "1z.png", "text": "1z" },
+            { "No": 2, "paiName": "南", "src": "2z.png", "text": "2z" },
+            { "No": 3, "paiName": "西", "src": "3z.png", "text": "3z" },
+            { "No": 4, "paiName": "北", "src": "4z.png", "text": "4z" },
+            { "No": 5, "paiName": "白", "src": "5z.png", "text": "5z" },
+            { "No": 6, "paiName": "發", "src": "6z.png", "text": "6z" },
+            { "No": 7, "paiName": "中", "src": "7z.png", "text": "7z" }
         ]
     ];
     return hoge;
@@ -231,11 +231,11 @@ function yukoupai_table() {
         "77m": [7], "77p": [7], "77s": [7], "77z": [7],
         "88m": [8], "88p": [8], "88s": [8],
         "99m": [9], "99p": [9], "99s": [9],
+        // くっつき受入の孤立牌
         "-1m": [1, 2, 3],
         "-2m": [1, 2, 3, 4],
         "-3m": [1, 2, 3, 4, 5],
         "-4m": [2, 3, 4, 5, 6],
-        // "-0m": [3, 4, 5, 6, 7], // 赤牌での判定
         "-5m": [3, 4, 5, 6, 7],
         "-6m": [4, 5, 6, 7, 8],
         "-7m": [5, 6, 7, 8, 9],
@@ -245,7 +245,6 @@ function yukoupai_table() {
         "-2p": [1, 2, 3, 4],
         "-3p": [1, 2, 3, 4, 5],
         "-4p": [2, 3, 4, 5, 6],
-        // "-0p": [3, 4, 5, 6, 7], // 赤牌での判定
         "-5p": [3, 4, 5, 6, 7],
         "-6p": [4, 5, 6, 7, 8],
         "-7p": [5, 6, 7, 8, 9],
@@ -255,7 +254,6 @@ function yukoupai_table() {
         "-2s": [1, 2, 3, 4],
         "-3s": [1, 2, 3, 4, 5],
         "-4s": [2, 3, 4, 5, 6],
-        // "-0s": [3, 4, 5, 6, 7], // 赤牌での判定
         "-5s": [3, 4, 5, 6, 7],
         "-6s": [4, 5, 6, 7, 8],
         "-7s": [5, 6, 7, 8, 9],
@@ -268,360 +266,409 @@ function yukoupai_table() {
         "-5z": [5],
         "-6z": [6],
         "-7z": [7],
-    }
+        // 対子受入の孤立牌
+        "+1m": [1],
+        "+2m": [2],
+        "+3m": [3],
+        "+4m": [4],
+        "+5m": [5],
+        "+6m": [6],
+        "+7m": [7],
+        "+8m": [8],
+        "+9m": [9],
+        "+1p": [1],
+        "+2p": [2],
+        "+3p": [3],
+        "+4p": [4],
+        "+5p": [5],
+        "+6p": [6],
+        "+7p": [7],
+        "+8p": [8],
+        "+9p": [9],
+        "+1s": [1],
+        "+2s": [2],
+        "+3s": [3],
+        "+4s": [4],
+        "+5s": [5],
+        "+6s": [6],
+        "+7s": [7],
+        "+8s": [8],
+        "+9s": [9],
+        "+1z": [1],
+        "+2z": [2],
+        "+3z": [3],
+        "+4z": [4],
+        "+5z": [5],
+        "+6z": [6],
+        "+7z": [7]
+    };
     return hoge;
 }
 
-function nakitatu_table() {
-    var hoge = {
-        "1": [[2, 3]],
-        "2": [[1, 3], [3, 4]],
-        "3": [[1, 2], [2, 4], [4, 5]],
-        "4": [[2, 3], [3, 5], [5, 6]],
-        "0": [[3, 4], [4, 6], [6, 7]],
-        "5": [[3, 4], [4, 6], [6, 7]],
-        "6": [[4, 5], [5, 7], [7, 8]],
-        "7": [[5, 6], [6, 8], [8, 9]],
-        "8": [[7, 9], [6, 7]],
-        "9": [[7, 8]],
-    }
-    return hoge;
-}
+// function nakitatu_table() {
+//     var hoge = {
+//         "1": [[2, 3]],
+//         "2": [[1, 3], [3, 4]],
+//         "3": [[1, 2], [2, 4], [4, 5]],
+//         "4": [[2, 3], [3, 5], [5, 6]],
+//         "0": [[3, 4], [4, 6], [6, 7]],
+//         "5": [[3, 4], [4, 6], [6, 7]],
+//         "6": [[4, 5], [5, 7], [7, 8]],
+//         "7": [[5, 6], [6, 8], [8, 9]],
+//         "8": [[7, 9], [6, 7]],
+//         "9": [[7, 8]]
+//     }
+//     return hoge;
+// }
 
 //============================================================================
 //HTML：テキストで雑に並べる
 //============================================================================
-function setting_html() {
+function settingHtml() {
     var hoge = [
-        ["　各設定項目の詳細については<br>　「その他」→「使い方～設定画面～」をご覧ください"],
-        ["<form id='settings'><br>"],
+        [
+            ["ゲームタイプ"],
+            ["<label for='gametype0'><input type='radio' id='gametype0' name='gametype' value='0'> 四麻</label><label for='gametype1'><input type='radio' id='gametype1' name='gametype' value='1'> 三麻</label>"],
+        ],
+        [
+            ["以下を有効牌に含める"],
+            ["<label for='kind0'><input type='checkbox' id='kind0' name='kind0'> 一般形</label><label for='kind1'><input type='checkbox' id='kind1' name='kind1'> 七対子</label><label for='kind2'><input type='checkbox' id='kind2' name='kind2'> 国士無双</label>"],
+        ],
+        [
+            ["手牌の自動理牌"],
+            ["<label for='ripai0'><input type='radio' id='ripai0' name='ripai' value='0'> する</label><label for='ripai1'><input type='radio' id='ripai1' name='ripai' value='1'> しない</label>"],
+        ]
 
-        ["　<span class='settingname'>ゲームタイプ</span><br><br>"],
-        ["　　<label for='gametype1'><input type='radio' id='gametype1' name='gametype' value='1'> 四麻</label>　　"],
-        ["<label for='gametype0'><input type='radio' id='gametype0' name='gametype' value='0'> 三麻</label>"],
-        ["<div class='hr'></div>"],
+        // [
+        //     ["有効牌一覧"],
+        //     ["<label for='yukodisp1'><input type='radio' id='yukodisp1' name='yukodisp' value='1'> 表示する</label><label for='yukodisp0'><input type='radio' id='yukodisp0' name='yukodisp' value='0'> 表示しない</label>"],
+        // ],
+        // ["　<span class='settingname'>鳴きを考慮</span><br><br>"],
+        // ["　　<label for='nakidisp1'><input type='radio' id='nakidisp1' name='nakidisp' value='1'> する</label>　　"],
+        // ["<label for='nakidisp0'><input type='radio' id='nakidisp0' name='nakidisp' value='0'> しない</label>"],
+        // ["<br><br>"],
+        // ["　<span class='settingname2'>以下を鳴く牌に含める</span><br>"],
+        // ["　　<label for='nakikind0' name='nakikind0'><input type='checkbox' id='nakikind0' name='nakikind0'> 萬子牌</label>　"],
+        // ["<label for='nakikind1' name='nakikind1'><input type='checkbox' id='nakikind1' name='nakikind1'> 筒子牌</label>　"],
+        // ["<label for='nakikind2' name='nakikind2'><input type='checkbox' id='nakikind2' name='nakikind2'> 索子牌</label><br>"],
+        // ["　　<label for='nakikind3' name='nakikind3'><input type='checkbox' id='nakikind3' name='nakikind3'> 字牌</label>　"],
+        // ["<label for='nakikind4' name='nakikind4'><input type='checkbox' id='nakikind4' name='nakikind4'> 2～8牌</label>　"],
+        // ["<label for='nakikind5' name='nakikind5'><input type='checkbox' id='nakikind5' name='nakikind5'> 1,9牌</label>　"],
+        // ["<div class='hr'></div>"],
 
-        ["　<span class='settingname'>以下を有効牌に含める</span><br><br>"],
-        ["　　<label for='kind0'><input type='checkbox' id='kind0' name='kind0'> 一般形</label>　"],
-        ["<label for='kind1'><input type='checkbox' id='kind1' name='kind1'> 七対子</label>　"],
-        ["<label for='kind2'><input type='checkbox' id='kind2' name='kind2'> 国士無双</label>"],
-        ["<div class='hr'></div>"],
-
-        ["　<span class='settingname'>有効牌一覧</span><br><br>"],
-        ["　　<label for='yukodisp1'><input type='radio' id='yukodisp1' name='yukodisp' value='1'> 表示する</label>　　"],
-        ["<label for='yukodisp0'><input type='radio' id='yukodisp0' name='yukodisp' value='0'> 表示しない</label>"],
-        ["<div class='hr'></div>"],
-
-        ["　<span class='settingname'>鳴きを考慮</span><br><br>"],
-        ["　　<label for='nakidisp1'><input type='radio' id='nakidisp1' name='nakidisp' value='1'> する</label>　　"],
-        ["<label for='nakidisp0'><input type='radio' id='nakidisp0' name='nakidisp' value='0'> しない</label>"],
-        ["<br><br>"],
-        ["　<span class='settingname2'>以下を鳴く牌に含める</span><br>"],
-        ["　　<label for='nakikind0' name='nakikind0'><input type='checkbox' id='nakikind0' name='nakikind0'> 萬子牌</label>　"],
-        ["<label for='nakikind1' name='nakikind1'><input type='checkbox' id='nakikind1' name='nakikind1'> 筒子牌</label>　"],
-        ["<label for='nakikind2' name='nakikind2'><input type='checkbox' id='nakikind2' name='nakikind2'> 索子牌</label><br>"],
-        ["　　<label for='nakikind3' name='nakikind3'><input type='checkbox' id='nakikind3' name='nakikind3'> 字牌</label>　"],
-        ["<label for='nakikind4' name='nakikind4'><input type='checkbox' id='nakikind4' name='nakikind4'> 2～8牌</label>　"],
-        ["<label for='nakikind5' name='nakikind5'><input type='checkbox' id='nakikind5' name='nakikind5'> 1,9牌</label>　"],
-        ["<div class='hr'></div>"],
-
-        ["　<span class='settingname'>受入良化牌</span> <span class='settingname2'>※処理重め</span><br><br>"],
-        ["　　<label for='ryokedisp1'><input type='radio' id='ryokedisp1' name='ryokedisp' value='1'> 表示する</label>　　"],
-        ["<label for='ryokedisp0'><input type='radio' id='ryokedisp0' name='ryokedisp' value='0'> 表示しない</label>"],
-        ["<br><br>"],
-        ["　<span class='settingname2'>全ての牌で受入良化をチェック </span><br>"],
-        ["　　<label for='pindisp1'><input type='radio' id='pindisp1' name='pindisp' value='1'> する</label>　　"],
-        ["<label for='pindisp0'><input type='radio' id='pindisp0' name='pindisp' value='0'> しない</label>"],
-        ["<br><br>"],
-        ["　<span class='settingname2'>有効牌と受入良化牌の表示順</span><br>"],
-        ["　　<label for='order1'><input type='radio' id='order1' name='order' value='1'> 分ける</label>　　　"],
-        ["<label for='order0'><input type='radio' id='order0' name='order' value='0'> 混ぜる</label>"],
-        ["<div class='hr'></div>"],
-
-        ["　<span class='settingname'>手牌の自動理牌</span><br><br>"],
-        ["　　<label for='ripai1'><input type='radio' id='ripai1' name='ripai' value='1'> する</label>　　　　"],
-        ["<label for='ripai0'><input type='radio' id='ripai0' name='ripai' value='0'> しない</label>"],
-
-        ["<br><br></form><br>"]
+        // ["　<span class='settingname'>受入良化牌</span> <span class='settingname2'>※処理重め</span><br><br>"],
+        // ["　　<label for='ryokedisp1'><input type='radio' id='ryokedisp1' name='ryokedisp' value='1'> 表示する</label>　　"],
+        // ["<label for='ryokedisp0'><input type='radio' id='ryokedisp0' name='ryokedisp' value='0'> 表示しない</label>"],
+        // ["<br><br>"],
+        // ["　<span class='settingname2'>全ての牌で受入良化をチェック </span><br>"],
+        // ["　　<label for='pindisp1'><input type='radio' id='pindisp1' name='pindisp' value='1'> する</label>　　"],
+        // ["<label for='pindisp0'><input type='radio' id='pindisp0' name='pindisp' value='0'> しない</label>"],
+        // ["<br><br>"],
+        // ["　<span class='settingname2'>有効牌と受入良化牌の表示順</span><br>"],
+        // ["　　<label for='order1'><input type='radio' id='order1' name='order' value='1'> 分ける</label>　　　"],
+        // ["<label for='order0'><input type='radio' id='order0' name='order' value='0'> 混ぜる</label>"],
+        // ["<div class='hr'></div>"],
     ];
     return hoge;
 }
 
-function other_html() {
+function infoHtml() {
     var hoge = [
         [
-            ["牌理ツールとは？<img src='./img/nowclose.png'>"],
-            [""],
-            ["――麻雀の打ち方を大体覚え、初心者の域は超えた。"],
-            ["もっとあがれるようになりたい！と調べ始めたあなた。"],
-            ["深い深い麻雀の沼へようこそ。"],
-            [""],
-            ["突然ですがこんな贅沢な手牌があったとします。何を切りますか？"],
-            ["45567m556778p23s　ツモ9m"],
-            ["<br>"],
-            ["手拍子に9m切ると思ったあなた。打9mより打7pの方が受け入れが4枚多いことにお気づきですか？"],
-            ["(点棒状況や一盃口、断么九も考えたら9m打でしょという方は真面目に読んでないでさっさと使ってください)"],
-            [""],
-            ["こんな辺鄙なところを訪れたあなたは既に知っているかもしれませんが、"],
-            ["これが早くあがるために必要な「牌効率」です。"],
-            ["牌理ツールとはこの早くあがるために必要な「牌効率」をより深く勉強できる補助ツールです。"],
-            [""],
-            ["実際に入力してみると以下のように表示されます。"],
-            ["打7p　有効牌：5種19枚"],
-            ["打9m　有効牌：4種15枚"],
-            ["打5m　有効牌：3種12枚"],
-            ["この1つ1つ枚数を間違えないように数えて比べる手間を一瞬で調べてくれるというわけです。"],
-            [""],
-            ["牌理ツールは他のサイトにも何個か既にありますが、当ツールは使いやすさを重視して作成していますので是非をご活用ください。"],
-            ["<br>"]
+            ["牌理ツールとは？"],
+            [`
+                <br>
+                <p>
+                    ――麻雀の打ち方を大体覚え、初心者の域は超えた。<br>
+                    もっとあがれるようになりたい！と調べ始めたあなた。<br>
+                    深い深い麻雀の沼へようこそ。<br>
+                </p>
+                <br>
+                <p>
+                    突然ですがこんな贅沢な手牌があったとします。何を切りますか？<br>
+                    45567m556778p23s　ツモ9m<br>
+                </p>
+                <br>
+                <p>
+                    手拍子に9m切ると思ったあなた。打9mより打7pの方が受け入れが4枚多いことにお気づきですか？<br>
+                    (点棒状況や一盃口、断么九も考えたら9m打でしょという方は真面目に読んでないでさっさと使ってください)<br>
+                </p>
+                <br>
+                <p>
+                    こんな辺鄙なところを訪れたあなたは既に知っているかもしれませんが、<br>
+                    これが早くあがるために必要な「牌効率」です。<br>
+                    牌理ツールとはこの早くあがるために必要な「牌効率」をより深く勉強できる補助ツールです。<br>
+                </p>
+                <br>
+                <p>
+                    実際に入力してみると以下のように表示されます。<br>
+                    打7p　有効牌：5種19枚<br>
+                    打9m　有効牌：4種15枚<br>
+                    打5m　有効牌：3種12枚<br>
+                    この1つ1つ枚数を間違えないように数えて比べる手間を一瞬で調べてくれるというわけです。<br>
+                </p>
+                <br>
+                <p>
+                    牌理ツールは他のサイトにも何個か既にありますが、当ツールは使いやすさを重視して作成していますので是非をご活用ください。<br>
+                </p>
+                <br>
+            `]
         ],
         [
-            ["使い方～手牌の作成方法～<img src='./img/nowclose.png'>"],
-            [""],
-            ["[手牌]ボタンをタップすると手牌作成画面が表示されます。"],
-            [""],
-            ["<span class='settingname'>手牌を直接入力</span>"],
-            ["<div class='hr'></div>牌画像を直接タップすると、画面下部に牌が追加されます。"],
-            ["画面下部の[牌画像]を直接タップするとその手牌を消せます。"],
-            ["<br>"],
-            ["<span class='settingname'>手牌をテキストで入力</span>"],
-            ["<div class='hr'></div>他の牌理ツールなどで手慣れている方はテキストでも入力されます。"],
-            ["入力しながら画面下部に牌がリアルタイムで反映されていきます。"],
-            ["※右から順に牌画像に変換していくため、必要以上に入力した場合は<span class='bline'>左側から消えます</span>のでご了承ください。"],
-            ["<br>"],
-            ["<span class='settingname'>手牌をランダムで作成</span>"],
-            ["<div class='hr'></div>[作成]ボタンをタップすると手牌がランダムで作成されます。"],
-            ["なんとなく使ってみたい時にご活用ください。"],
-            ["<br>"]
+            ["使い方～手牌の作成方法～"],
+            [`
+                <br>
+                <p>
+                    このエリアで手牌の操作が可能です。<br>
+                    <img src='./img/palette.png' class='infoPng'>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>手牌を直接入力</span><br>
+                    牌画像をタップすると、手牌に牌を追加できます。<br>
+                    ゲームタイプを三麻にしているとマンズの2～8mはタップ不可能になります。<br>
+                    赤牌は各種類1つまで手牌に含められます。<br>
+                    <br>
+                    手牌の牌画像をタップすると、手牌から削除することができます。
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>手牌をテキストで入力</span><br>
+                    マンズ = m、ピンズ = p、ソーズ = s、字牌 = z<br>
+                    として手牌をテキスト化したものが表示がされます。<br>
+                    逆にテキストを入力して手牌を表示することも可能です。<br>
+                    ※手牌画像はテキスト確定時に反映されます。<br>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>手牌をランダムで作成</span><br>
+                    [作成]ボタンをタップすると手牌がランダムで作成されます。<br>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>現在の手牌を削除</span><br>
+                    [取消]ボタンをタップすると現在の手牌を削除できます。<br>
+                </p>
+                <br>
+            `]
         ],
         [
-            ["使い方～有効牌画面～<img src='./img/nowclose.png'>"],
-            [""],
-            ["手牌を入力後に手牌作成画面を閉じると、自動で処理が開始され、有効牌が表示されます。"],
-            [""],
-            ["<span class='settingname'>有効牌表示について</span>"],
-            ["<div class='hr'></div>牌をツモった時、<span class='bline'>シャンテン数が進む牌だった時の枚数</span>を有効牌としています。"],
-            ["表示枚数は手牌で使用されている分は引かれています。"],
-            ["手牌が3枚、6枚、9枚、12枚の時は表示されません。"],
-            ["手牌が1枚、4枚、7枚、10枚、13枚は現在の手牌で有効牌が表示されます。"],
-            ["手牌が2枚、5枚、8枚、11枚、14枚はシャンテン数が進む打牌ごとに有効牌を表示しています。"],
-            ["表示優先順は一番上から「<span class='bline'>有効牌枚数＞有効牌種数＞受入良化枚数＞受入良化種数</span>」となっています。"],
-            ["また<span class='bline'>明るい牌は有効牌、暗い牌は受入良化牌</span>として表示されています。"],
-            ["<br>"],
-            ["<span class='settingname'>打牌機能について</span>"],
-            ["<div class='hr'></div>画面下部の[牌画像]をタップすると、打牌をしてランダムで牌をツモることができ、有効牌の変化を確認することが出来ます。"],
-            ["また有効牌の「打：[牌画像]」となっている[牌画像]をタップしても同様に打牌が可能です。"],
-            ["有効牌の枚数直下に表示されている牌一覧の[牌画像]をタップすると、"],
-            ["「打：[牌画像]」で表示されている牌を打牌して、牌一覧でタップした[牌画像]をツモってきます。"],
-            ["直接シャンテン数、受入良化の手替わりを進めて確認することが出来ますのでご活用ください。"],
-            ["※注意"],
-            ["ツモ牌は「<span class='bline attention'>手牌で4枚使用していない牌全てを均等確率でツモる</span>」仕組みとなっています。"],
-            ["そのため1枚も所持していない牌と暗刻の牌は同じ確率でツモります。"],
-            ["また理論上5連続で同じ牌をツモることも起こりえます。"],
-            ["あくまで有効牌の枚数、変化を確認するための補助機能になりますのでご了承ください。"],
-            ["<br>"],
-            ["<span class='settingname'>受入良化について</span>"],
-            ["<div class='hr'></div>(恐らく公開済無料ツールの中で)当ツール独自で実装している機能です。"],
-            ["ただし処理が重いため、0.5秒～6秒(特に清一色手)かかりますので、"],
-            ["有効牌機能のみ使用したい場合は[設定]から「表示しない」に変更をお願いします。"],
-            ["染め手については[設定]から「全ての牌で受入良化をチェック」を「表示しない」にすると処理が軽くなる場合があります。"],
-            [""],
-            ["当ツールの受入良化牌の定義は"],
-            ["「<span class='bline attention'>シャンテン数が進まない牌をツモった時、現在表示されている最大の有効牌枚数、または有効牌種数が増える牌</span>」"],
-            ["を対象としています。"],
-            ["言葉だとわかりにくいので、実際に適当な手牌を作成後、暗い牌をタップして手を進めてみてください。"],
-            ["さっき一番上に表示されていた有効牌枚数、有効牌種数より有効牌枚数、または有効牌種数が増えているのが確認できると思います。"],
-            ["※ざっくりいえば、1種4枚→2種4枚、1種2枚→1種3枚になるツモも受入良化牌で表示しています。"],
-            [""],
-            ["「良形待ちになる牌」ではないため、特にリャンシャンテン以下ではくっつき牌が受入良化牌として表示されることが多くなります。"],
-            ["これは元々聴牌手の良形手替わり待ちで立直をかけない判断をする枚数を調べる目的で実装しており、"],
-            ["イーシャンテン以下では副産物としての対応となっているためです。"],
-            ["しかしケイテン取りなどの最速聴牌手順としては利用できると思います。"],
-            ["<br>"],
-            ["<span class='settingname'>戻る・進むボタンについて</span>"],
-            ["<div class='hr'></div>右上に「<>」こんなのがポツンと表示されていますが、戻る(<)・進む(>)ボタンです。"],
-            ["1回処理を行うごとに過去の手牌や結果を保存しており、2回以上処理を行うと過去に処理した結果へ戻ることが出来ます。"],
-            ["保存可能な数は最大20回分となります。それ以上は古いものから削除されます。"],
-            ["戻っている最中に新しい手牌の処理を実行すると<span class='bline'>それより新しい結果は全て破棄</span>されますのでご注意ください。"],
-            ["※ブラウザの戻る・進むボタンの挙動と同じと思っていただければ問題ありません。"],
-            ["<br>"]
+            ["使い方～有効牌画面～"],
+            [`
+                <br>
+                <p>
+                    手牌を入力すると自動で処理が開始され、シャンテン数と有効牌が表示されます。<br>
+                    <img src='./img/mainArea.png' class='infoPng'>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>シャンテン数について</span><br>
+                    七対子、国士無双、それ以外の一般形の3種類のシャンテン数が表示されます。<br>
+                    「-」と表示されている場合は、設定や手牌の枚数をご確認ください。<br>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>有効牌について</span><br>
+                    牌をツモった時、<span class='bline'>シャンテン数が進む牌だった時の枚数</span>が有効牌となっています。<br>
+                    表示枚数は手牌で使用されている分は引かれています。<br>
+                    赤牌は有効牌として表示されません。<br>
+                    表示優先順は一番上から「<span class='bline'>有効牌枚数＞有効牌種数</span>」となっています。<br>
+                    <br>
+                    打牌の牌画像をタップすると、<span class='bline'>その牌を打牌してランダムで牌をツモ</span>ることができます。<br>
+                    有効牌の牌画像をタップすると、<span class='bline'>打牌をしつつタップした牌をツモ</span>ることができます。<br>
+                    <br>
+                    手牌が0枚、3枚、6枚、9枚、12枚の時は処理されません。<br>
+                    手牌が1枚、4枚、7枚、10枚、13枚は現在の手牌で有効牌が表示されます。<br>
+                    手牌が2枚、5枚、8枚、11枚、14枚はシャンテン数が変わらない打牌ごとに有効牌を表示しています。<br>
+                    <br>
+                    ※注意<br>
+                    ツモ牌は「<span class='bline attention'>手牌で4枚使用していない牌全てを均等確率でツモる</span>」仕組みとなっています。<br>
+                    そのため1枚も所持していない牌と暗刻の牌は同じ確率でツモります。<br>
+                    また理論上5連続で同じ牌をツモることも起こりえます。<br>
+                    あくまで有効牌の枚数するための補助機能になりますのでご了承ください。<br>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>手牌履歴について</span><br>
+                    <img src='./img/history.png' class='infoPng'>
+                    <br>
+                    手牌を1回処理するごとに、処理した履歴が保存されます。<br>
+                    保存件数は最大20件です。それ以上は古いものから削除されます。<br>
+                    <br>
+                    過去に処理した手牌を表示中に、新しく牌を追加などをして処理が実行されると、<br>
+                    <span class='bline'>それ以降の新しい履歴は全て破棄</span>されますのでご注意ください<br>
+                    ※ブラウザの戻る・進むボタンの挙動と同じと思っていただければ問題ありません。<br>
+                </p>
+                <br>
+            `],
         ],
         [
-            ["使い方～設定画面～<img src='./img/nowclose.png'>"],
-            [""],
-            ["表示や処理方法を変更できます。"],
-            ["需要がありそうな設定があったら後々追加するかもしれません。"],
-            [""],
-            ["<span class='settingname'>ゲームタイプ</span>"],
-            ["<div class='hr'></div>四麻(四人打ち)、三麻(三人打ち)で使用牌を調整できます。"],
-            ["萬子の2～8牌が表示されなくなります。萬子の2～8牌が含まれている状態では処理ができません。"],
-            [""],
-            [""],
-            ["<span class='settingname'>以下を有効牌に含める</span>"],
-            ["<div class='hr'></div>一般形、七対子、国士無双を有効牌に含めるかを設定できます。"],
-            ["鳴き手はチェックしていても七対子、国士無双を処理も含め判定されていません。"],
-            [""],
-            [""],
-            ["<span class='settingname'>有効牌一覧</span>"],
-            ["<div class='hr'></div>牌が並んでいる有効牌一覧を表示有無を設定できます。"],
-            ["各打牌ごとの有効牌の枚数を画面内に多く収めたい時などにご使用ください。"],
-            [""],
-            [""],
-            ["<span class='settingname'>鳴きを考慮</span>"],
-            ["<div class='hr'></div>チー2倍速、ポン4倍速とした時の実質受入枚数を表示できます。"],
-            ["チーとポンが両方行える場合、ポンで判定をしています。"],
-            ["鳴きを考慮している間、打牌の表示順は鳴きの枚数も含めてソートしています。"],
-            ["「+NN」枚と表示される箇所は鳴き分だけの枚数です。"],
-            ["ポンの場合、2x4=実質8枚となりますが、ツモ分で既に2枚加算しているため、6枚が鳴き分になります。"],
-            [""],
-            [""],
-            ["<span class='settingname'>以下を鳴く牌に含める</span>"],
-            ["<div class='hr'></div>鳴きを考慮する際、鳴く対象の牌を絞れます。"],
-            ["特定のブロックは鳴かないようにしたり、タンヤオになる牌だけ比較したい場合などにご使用ください。"],
-            [""],
-            [""],
-            ["<span class='settingname'>受入良化牌</span>"],
-            ["<div class='hr'></div>シャンテン数は変わらないが有効牌が増える受入良化牌の判定有無を変更できます。"],
-            ["処理が重いため、純粋な牌理ツールとして使用する場合は表示しない設定にすることをおすすめします。"],
-            [""],
-            [""],
-            ["<span class='settingname'>全ての牌で受入良化をチェック</span>"],
-            ["<div class='hr'></div>1233mだと有効牌が1種2枚しかないため、3mを除く全ての牌が1種3枚(単騎待ち)以上で受入良化牌の対象となります。"],
-            ["これを表示しないにした場合、関連牌しか判定しなくなるため受入良化牌は1245mのみ表示されます。"],
-            ["表示しないにすると無駄な処理が省かれ結果が出るまでの時間が短くなりますので"],
-            ["混一色や清一色で固定する手などで処理に時間がかかる場合は切り替えてみてください。"],
-            [""],
-            [""],
-            ["<span class='settingname'>有効牌と受入良化牌の表示順</span>"],
-            ["<div class='hr'></div>分ける場合は上段が有効牌(明るい牌)、下段が受入良化牌(暗い牌)で表示されます。"],
-            ["混ぜる場合は牌種の並び順で1列に表示されます(明るさは別で表示されます)"],
-            [""],
-            [""],
-            ["<span class='settingname'>手牌の自動理牌</span>"],
-            ["<div class='hr'></div>手牌の並び順をツモ牌を除き、左から順に「萬子＞筒子＞索子＞字牌」と並びかえます。"],
-            ["自動理牌しなくても有効牌表示や打牌への影響はありません。"],
-            ["<br>"]
+            ["使い方～編集ウィンドウ～"],
+            [`
+                <br>
+                <p>
+                    表示や処理方法を変更できます。<br>
+                    <img src='./img/setting.png' class='infoPng'><br>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>ゲームタイプ</span><br>
+                    四麻(四人打ち)、三麻(三人打ち)で使用牌を調整できます。<br>
+                    三麻にするとのマンズの2～8牌が使用できなくなります。有効牌も対象外となります。<br>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>以下を有効牌に含める</span><br>
+                    一般形、七対子、国士無双を有効牌に含めるかを設定できます。<br>
+                    鳴き手牌では七対子、国士無双をチェックしていても処理されません。<br>
+                    全てチェックを外すと何も処理されなくなります。<br>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>手牌の自動理牌</span><br>
+                    手牌の並び順をツモ牌を除き、左から順に「マンズ＞ピンズ＞ソーズ＞字牌」と並びかえます。<br>
+                    有効牌表示や打牌への影響はありません。<br>
+                    自動理牌しない状態では自分で手牌の牌の位置を入れ替えることができます。<br>
+                </p>
+                <br>
+            `]
         ],
         [
-            ["使用するにあたって<img src='./img/nowclose.png'>"],
-            [""],
-            ["この二次箱牌理ツール(以下「当ツール」とする)はREDが開発しています。"],
-            [""],
-            ["勝手な自作発言、当ツールの複製や譲渡、貸出、配布、"],
-            ["また販売などの金銭を含むやりとりは禁止です。"],
-            ["万が一公開停止を余儀なくされた場合は予告なく削除しますのでご了承ください。"],
-            [""],
-            ["当ツールを使用した動画や画像などを動画配信サービスやSNS、ブログに使用する際、"],
-            ["特に許可は取らずに使用していただいて構いません。"],
-            [""],
-            ["もしこういう機能が欲しい！などがあれば実装予定リストに追加致しますので、"],
-            ["二次元ゲイム箱庭諸島内のチャットやREDのTwitterアカウントへお気軽にご連絡ください"],
-            ["<br>"]
+            ["使用するにあたって"],
+            [`
+                <br>
+                <p>
+                    この二次箱牌理ツール(以下「当ツール」とする)はREDが開発しています。
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>cookieの同意</span><br>
+                    当サイト下ではcookieの同意を導入しており、当牌理ツールもcookieを使用しております。<br>
+                    同意をしなくても使用自体は可能です。<br>
+                    <br>
+                    同意をした場合は編集画面の設定状態を保存することが出来ます。<br>
+                    なおgoogleAnalyticsにアクセスログが収集されるため、どのくらいの人が利用しているか、<br>
+                    どのような端末で利用されているかで今後開発する際の参考資料となりモチベに直結します。<br>
+                </p>
+                <br>
+                <p>
+                    <span class='settingName'>その他注意事項</span><br>
+                    勝手な自作発言、当ツールの複製や譲渡、貸出、配布、<br>
+                    また販売などの金銭を含むやりとりは禁止です。<br>
+                    万が一公開停止を余儀なくされた場合は予告なく削除しますのでご了承ください。<br>
+                </p>
+                <br>
+                <p>
+                    当ツールを使用した動画や画像などを動画配信サービスやSNS、ブログに使用する際、<br>
+                    特に許可は取らずに使用していただいて構いません。<br>
+                    「#二次箱牌理ツール」とかつけていただけるとエゴサが捗ります。<br>
+                </p>
+                <br>
+                <p>
+                    もしこういう機能が欲しい！などがあれば実装予定リストに追加致しますので、<br>
+                    二次元ゲイム箱庭諸島のdiscordやREDの𝕏アカウントへお気軽にご連絡ください。<br>
+                </p>
+                <br>
+            `]
         ],
         [
-            ["リンク<img src='./img/nowclose.png'>"],
-            [""],
-            ["<a href='../privacy-policy.html' target='_blank'>プライバシーポリシー</a>"],
-            ["お固いやつですが重要なものです。私もよく読まなかったりしますが、可能であればご一読ください。"],
-            [""],
-            ["<a href='https://hako2d-mj.xii.jp/' target='_blank'>二次元ゲイム箱庭諸島</a>"],
-            ["当管理人が運営している大元の個人ホームページです。"],
-            ["箱庭諸島(cgiゲーム)はbotなし、また長期から短期開催まで幅広く運営しておりますので興味のある方はぜひご参加ください。"],
-            ["興味のない方はこの機会に興味を持ってください。"],
-            ["地道に育成をしたり放置ゲーが好きという方は特におすすめできます。"],
-            [""],
-            ["<a href='https://mahjong.org/training/training_006/' target='_blank'>麻雀ツール点数計算ラボ</a>"],
-            ["10年以上運営されて最高段位は未だ二十数人しか獲得していない、天鳳で最高段位を獲得しているタケオしゃん氏の牌理ツールです。"],
-            ["当ツールのシャンテン数処理は麻雀小粒プログラミングのオープンソースをベースにしています。"],
-            ["C#のサイトも参照しましたがここが一番軽量でした。おすすめです。"],
-            [""],
-            ["<a href='http://critter.sakura.ne.jp/agari_keisan.html' target='_blank'>ツモアガリ確率計算機</a>"],
-            ["古くからある、一人麻雀での和了確率、得点期待値を残り巡目ごとに出してくれるCritter氏のツールです。"],
-            ["一人麻雀なのでロン和了や鳴きには対応していませんが、序盤の手牌であれば十分参考になると思います。"],
-            [""],
-            ["<a href='https://pystyle.info/apps/mahjong-nanikiru-simulator/' target='_blank'>麻雀何切るシミュレーター</a>"],
-            ["比較的新しい、和了確率や得点期待値、聴牌確率を出してくれるpystyle氏のツールです。"],
-            ["こちらもロン和了や鳴きには対応していませんが、手替わりや向聴戻しなど細かい条件が設定でき、"],
-            ["巡目ごとの期待値を各打牌でグラフ化して表示してくれる高機能なツールになっています。"],
-            [""],
-            ["<a href='https://akochan.ekyu.moe/' target='_blank'>あこちゃんレビュアー</a>"],
-            ["Akochanという麻雀AIが牌譜検討をしてくれる無料ツールです。"],
-            ["現在は天鳳の牌譜のみ対応となってしまいましたが、ローカルに落とせば雀魂の牌譜も検討可能です。"],
-            ["天鳳の七段〜九段相当くらいの実力のようです。なお大元のAIはCritter氏が公開しています。"],
-            [""],
-            ["<a href='https://naga.dmv.nico/naga_report/top/' target='_blank'>麻雀AI「NAGA」</a>"],
-            ["NAGAという麻雀AIを利用できる有料サービスです。"],
-            ["天鳳特上卓十段を達成した実力で、天鳳のみのサポートですが牌譜検討をしてくれます。"],
-            ["さらには個室にNAGAを呼び出して実際に対局したり、異なる打牌をするタイプのNAGAもいます。"],
-            [""],
-            ["<a href='https://amae-koromo.sapk.ch/' target='_blank'>雀魂牌譜屋</a>"],
-            ["金の間以上で打った記録はここで海外の有志の方が集計、無料公開されています。"],
-            ["地道なアップデートが繰り返されており、打点調整効率やリーチ良形率など有料レベルの細かいデータまで記録されています。"],
-            [""],
-            ["<a href='https://nodocchi.moe/tenhoulog/' target='_blank'>天鳳IDログ検索</a>"],
-            ["公開されているログを集計した記録を無料公開されています。"],
-            ["結果のログのみにはなりますが、IDを取得していれば一般卓から友人戦、大会戦まで全ての結果を見ることが出来ます。"],
-            ["なおIDが消滅したかどうかは判別出来ないため、稀に前世の記録が残っているのはご愛嬌。"],
-            [""],
-            ["<a href='http://tenhou.net/0/' target='_blank'>天鳳</a>"],
-            ["ネットで無料で打てる麻雀サイトです。<span class='cline'>みんなだいすきおてんほい</span>"],
-            ["洗練されたUI/UXで味気ないところはありつつも、麻雀をやるだけならサクサク打てるその手軽さはトップクラスです。"],
-            ["逆に真の麻雀好きしか集まらないため、上位の段位はかなりレベルが高くなっています。"],
-            [""],
-            ["<a href='https://mahjongsoul.com/' target='_blank'>雀魂</a>"],
-            ["天鳳アセットの牌理ツールはあるけど雀魂アセットの牌理ツールまだなくない？と思い立つ元凶となった雀魂です。"],
-            ["上記からはWeb版、iOS版、AOS版のリンクがあります。他にDMM版、steam版(現在日本は不可)もあります。"],
-            ["<span class='bline attention'>当ツールの問い合わせは絶対に行わないでください。運営の迷惑になります。</span>"],
-            [""],
-            ["<a href='https://twitter.com/MahjongSoul_JP' target='_blank'>雀魂公式ツイッター</a>"],
-            ["雀魂の公式Twitterです。"],
-            ["緊急メンテの情報など、Twitterしか公開してくれない情報が意外とあるので覚えておくとたまに役立ちます。"],
-            ["<span class='bline attention'>当ツールの問い合わせは絶対に行わないでください。運営の迷惑になります。</span>"],
-            [""],
-            ["<a href='https://twitter.com/2jigenfbi0' target='_blank'>developed by RED</a>"],
-            ["当ツール作成者のTwitterです。"],
-            ["不具合報告などは二次元ゲイム箱庭諸島内のチャット、またはこのTwitterアカウントにメンションなどをしてご報告ください。"],
-            ["ちなみに作成者をフォローするとあなたのフォロワー数を1増やすことができます。"],
-            ["<br>"]
+            ["リンク"],
+            [`
+                <br>
+                <p>
+                    <a href='../privacy-policy.html' target='_blank'>プライバシーポリシー</a><br>
+                    お固いやつですが重要なものです。私もよく読まなかったりしますが、可能であればご一読ください。<br>
+                </p>
+                <br>
+                <p>
+                    <a href='https://hako2d-mj.xii.jp/' target='_blank'>二次元ゲイム箱庭諸島</a><br>
+                    当管理人が運営している大元の個人サイトです。<br>
+                    箱庭諸島(cgiゲーム)はbotなし、また長期から短期開催まで幅広く運営しておりますので興味のある方はぜひご参加ください。<br>
+                    興味のない方はこの機会に興味を持ってください。<br>
+                    地道に育成をしたり放置ゲーが好きという方は特におすすめできます。<br>
+                </p>
+                <br>
+                <p>
+                    <a href='https://twitter.com/2jigenfbi0' target='_blank'>developed by RED</a><br>
+                    当ツール作成者の𝕏です。<br>
+                    不具合報告などは二次元ゲイム箱庭諸島内のdiscord、またはこの𝕏アカウントにメンションなどをしてご報告ください。<br>
+                    ちなみに作成者をフォローするとあなたのフォロワー数を1増やすことができます。<br>
+                </p>
+                <br>
+                <p>
+                    <a href='https://naga.dmv.nico/naga_report/top/' target='_blank'>麻雀AI「NAGA」</a><br>
+                    NAGAという麻雀AIを利用できる有料サービスです。<br>
+                    天鳳特上卓十段を達成した実力で、天鳳のみサポート(カスタム牌譜なら実質他の麻雀サービスでも可)しています。<br>
+                    様々な打牌タイプのNAGAが牌譜検討してくれ、自分にあったタイプを見つけることもできます。<br>
+                    天鳳の個室にNAGAを呼び出して実際に対局したりすることも可能です。<br>
+                </p>
+                <br>
+                <p>
+                    <a href='https://mjai.ekyu.moe/ja.html' target='_blank'>Mahjong AI Utilities</a><br>
+                    Mortalという麻雀AIが牌譜検討をしてくれるツールです。<br>
+                    四麻半荘の段位戦ルール限定、UIも若干不便ではありますが、無料と思えない高レベルです。<br>
+                    天鳳の牌譜がベースとなっていますが、雀魂、麻雀一番街、姫麻雀の牌譜でも自動で読み込むことがかのうです。<br>
+                    天鳳の個室にMortalを呼び出して実際に対局したりすることも可能です。<br>
+                </p>
+                <br>
+            `]
         ],
         [
-            ["履歴<img src='./img/nowclose.png'>"],
-            [""],
-            ["2020/06/29　思い立って着手開始"],
-            [""],
-            ["2020/07/20　v1.0.0公開"],
-            [""],
-            ["2021/01/23　v1.0.1公開"],
-            ["・タブにタイトル名がなかったので追加"],
-            ["・良形変化→受入良化に表記を変更"],
-            ["・ツイート時の手牌表示を厳密化(0mは赤5m、0zは東など)"],
-            ["・ツイート条件をツモ牌があるときのみに変更、あわせてツモ表示追加"],
-            [""],
-            ["2021/02/07　v1.1.0公開"],
-            ["・牌理処理を全体的に見直し"],
-            ["・三麻ルールに対応"],
-            ["・戻る・進むボタン追加"],
-            ["・チー・ポン可能な場合の実質受入枚数追加"],
-            ["・その他細かい調整"],
-            [""],
-            ["2021/02/11　v1.1.1公開"],
-            ["・過去の手牌に戻った時、一部枚数が正常に表示されないのを修正"],
-            ["・特定の向聴数と設定が重なった時、有効牌が表示されないのを修正"],
-            ["・特定の七対子の手牌で有効牌が表示されないのを修正"],
-            ["・その他細かい調整"],
-            [""],
-            ["2021/04/22　v1.1.2公開"],
-            ["・鳴き考慮中に戻る進むボタンを押した際の表示不具合を修正"],
-            [""],
-            ["2022/03/19　v1.1.3公開"],
-            ["・cookieの同意ポップアップ追加"],
-            ["・(cookieを使用する場合)ページを開き直しても設定画面の内容が保持されるよう調整"],
-            ["・リンクサイトを拡充"],
-            [""],
-            ["2022/04/19　v1.1.4公開"],
-            ["・cookieを使用している際に一部設定の呼び出しが出来ていなかったのを修正"],
-            ["・手牌指定したURLから遷移した時、理牌しないだと処理出来なかったのを修正"],
-            ["<br>"],
+            ["履歴"],
+            [`
+                <br>
+                <p>
+                    2020/06/29　思い立って着手開始<br>
+                </p>
+                <br>
+                <p>
+                    2020/07/20　v1.0.0公開<br>
+                </p>
+                <br>
+                <p>
+                    2021/01/23　v1.0.1公開<br>
+                    ・タブにタイトル名がなかったので追加<br>
+                    ・良形変化→受入良化に表記を変更<br>
+                    ・ツイート時の手牌表示を厳密化(0mは赤5m、0zは東など)<br>
+                    ・ツイート条件をツモ牌があるときのみに変更、あわせてツモ表示追加<br>
+                </p>
+                <br>
+                <p>
+                    2021/02/07　v1.1.0公開<br>
+                    ・牌理処理を全体的に見直し<br>
+                    ・三麻ルールに対応<br>
+                    ・戻る・進むボタン追加<br>
+                    ・チー・ポン可能な場合の実質受入枚数追加<br>
+                    ・その他細かい調整<br>
+                </p>
+                <br>
+                <p>
+                    2021/04/22　v1.1.2公開<br>
+                    ・鳴き考慮中に戻る進むボタンを押した際の表示不具合を修正<br>
+                </p>
+                <br>
+                <p>
+                    2022/03/19　v1.1.3公開<br>
+                    ・cookieの同意ポップアップ追加<br>
+                    ・(cookieを使用する場合)ページを開き直しても設定画面の内容が保持されるよう調整<br>
+                    ・リンクサイトを拡充<br>
+                </p>
+                <br>
+                <p>
+                    2022/04/19　v1.1.4公開<br>
+                    ・cookieを使用している際に一部設定の呼び出しが出来ていなかったのを修正<br>
+                    ・手牌指定したURLから遷移した時、理牌しないだと処理出来なかったのを修正<br>
+                </p>
+                <br>
+                <p>
+                    2024/05/05　v1.2.0公開<br>
+                    ・管理コスト削減のため一から作り直し<br>
+                    ・受入良化牌、実質受入枚数(鳴きを考慮)の機能を削除<br>
+                    ・URLに手牌パラメータを含めて遷移出来る機能を削除<br>
+                    ・「ツイートする」ボタン削除<br>
+                </p>
+                <br>
+            `]
         ],
     ];
 
