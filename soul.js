@@ -17,7 +17,8 @@ var settings = {
     "ryokedisp": true,
     "pindisp": true,
     "order": true,
-    "ripai": true
+    "ripai": true,
+    "cookieAgree": false
 };
 var reload_flg = 0; // 何も設定を変更しない場合は無駄に処理しない
 var tehai_history = [];
@@ -951,6 +952,7 @@ function settings_Display() {
     // 設定状態をHTMLに反映
     $("#longpopup > .scroll_area").append(list);
     for (let key in settings) {
+        if (key == "cookieAgree") continue;
         setings_reload(key, 0);
     }
 }
@@ -1012,6 +1014,10 @@ function setings_reload(elmName, flg) {
             settings[elmName] ? $("#" + name0).parent().removeClass("check") : $("#" + name0).parent().addClass("check");
         }
     }
+    if (settings.cookieAgree) {
+        document.cookie = elmName + "=" + settings[elmName] + "; Max-Age=" + (60 * 60 * 24 * 30) + ";";
+    }
+    if (debug) console.log(document.cookie);
     if (debug) console.log(settings);
 }
 
@@ -1210,6 +1216,7 @@ function window_load() {
     $(window).innerHeight() >= $(window).innerWidth() ? vertical_display(h, w) : wide_display(h, w);
     // 共通処理
     close_button_size();
+    cookieSettings();
     // 手牌指定で飛んできたら即見れるようにする
     var param = location.search;
     if (param != "") {
@@ -1252,3 +1259,18 @@ $(window).on('orientationchange resize', function () { // 画面回転
 $(document).on("contextmenu", "img", function () {
     return false;
 });
+
+function cookieSettings() {
+    // cookieを連想配列にする
+    var cookiesArray = document.cookie.split('; ');
+    for (var c of cookiesArray) {
+        var cArray = c.split('=');
+        if (/(_ga|_gid)/.test(cArray[0])) continue;
+        if (/cookieAgree/.test(cArray[0])) {
+            if (cArray[1] == "true") document.cookie = "cookieAgree=true; Path=/; Max-Age=" + (60 * 60 * 24 * 365) + ";";
+            settings[cArray[0]] = cArray[1] == "true" ? true : false;
+            continue;
+        }
+        settings[cArray[0]] = /(1|true)/.test(cArray[1]) ? 1 : 0;
+    }
+};
