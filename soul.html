@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<HTML lang="ja">
+
+<HEAD>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <meta name="theme-color" content="#000000">
+    <meta name="keywords" content="麻雀,雀魂,ツール,牌効率,牌理,天鳳">
+    <meta name="description" content="牌効率の勉強に効果的な次世代型牌理ツール。良形手替わりまで丸わかり！">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" type="image/x-icon" href="../index_pack/image/monumentmajan.png">
+    <link rel="stylesheet" type="text/css" href="./soul.css">
+    <meta name='twitter:card' content="summary_large_image">
+    <meta name='twitter:site' content="@2jigenfbi0">
+    <meta property='og:url' content="https://hako2d-mj.xii.jp/mahjong_tool/soul.html">
+    <meta property='og:title' content="二次箱麻雀牌理ツール">
+    <meta property='og:description' content="あなたなら何を切る？牌効率の勉強に効果的な牌理ツール。良形手替わりまで丸わかり！">
+    <meta property='og:image' content="https://hako2d-mj.xii.jp/mahjong_tool/img/twitter_card.png">
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./mt.js"></script>
+    <script type="text/javascript" src="./data_list.js"></script>
+    <script type="text/javascript" src="./soul.js"></script>
+    <script type="text/javascript" src="./main_process.js"></script>
+    <script type="text/javascript" src="./main_yprocess.js"></script>
+</HEAD>
+
+<BODY onload="window_load()">
+    <div id="flame">
+        <div id="main">
+            <div id="yukohai_area">
+                <div id="syanten_area">
+                    <span><br>二次箱麻雀牌理ツール</span>
+                    <br>
+                    <span id="normal_syanten"></span><span id="seventoitu_syanten"></span><span id="kokusi_syanten"></span>
+                </div>
+                <table id="yukotable">
+                </table>
+            </div>
+        </div>
+        <div id="paiTehai"></div>
+        <div id="menu">
+            <div id="other" class="menu_button" onclick="popup_window(3)"><p>その他</p></div>
+            <div id="setting" class="menu_button" onclick="popup_window(2)"><p>設定</p></div>
+            <div id="tehai_setting" class="menu_button" onclick="popup_window(1)"><p>手牌</p></div>
+        </div>
+    </div>
+</BODY>
+
+</HTML>
