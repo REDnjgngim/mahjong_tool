@@ -578,7 +578,7 @@ function tehaimobe(move) {
         // シャンテン数を再表示
         syanten_output(t.syantenlist, t.pais);
         // 有効牌を再表示
-        if (t.min_syanten >= 0) yukohai_output(t.tablelist);
+        if (t.min_syanten >= 0) yukohai_output(t.tablelist, t.min_syanten);
         history_button_reload();
     }
 }
