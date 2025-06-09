@@ -77,7 +77,39 @@ img.paiimg{
         .agari{
             color: red;
         }
+
     /* ------------------- 有効牌表示 ------------------- */
+    #history_area{
+        position: absolute;
+        display: flex;
+        flex-wrap: wrap;
+        height: 10%;
+        width: 10%;
+        min-height: 2em;
+        max-height: 4em;
+        min-width: 5em;
+        background-color: #141a30;
+        top: 5px;
+        right: 5px;
+        border: 2px #c48e5d solid;
+        border-radius: 10px;
+        font-weight: bold;
+        z-index: 20;
+    }
+        #history_area img{
+            position: relative;
+            display: table-cell;
+            height: 100%;
+            width: 50%;
+            margin: 0;
+            filter: grayscale(100);
+            z-index: 25;
+        }
+
+        #before_button{
+            transform: scale(-1, 1);
+        }
+
     #yukohai_area{
         position: relative;
         height: calc(90% - 6px);
@@ -106,6 +138,19 @@ img.paiimg{
             width: 100%;
         }
 
+            .paiset{
+                display: inline-block;
+            }
+
+            #yukohai_area img.nakipai{
+                width: 1.24em;
+                display: block;
+            }
+
+            .nakicount{
+                color: yellow;
+            }
+
         #yukohai_area .paiimg {
             display: inline-block;
             height: 2em;
@@ -113,8 +158,8 @@ img.paiimg{
             vertical-align: bottom;
         }
 
-        .ryoke{
-            filter: brightness(80%);
+        .shadow{
+            filter: brightness(70%);
         }
 
             #yukohai_area tr.table_header {
@@ -149,10 +194,12 @@ img.paiimg{
                 color: black;
                 font-size: 1.5em;
             }
+
             /* 入力例画像専用 */
             #tehai_ex .paiimg{
                 width: 4%;
                 margin: 0;
+                filter: brightness(100%);
             }
             #tehai_ex{
                 margin: 1%;
@@ -212,6 +259,12 @@ img.paiimg{
                 color: #e0aa6e;
                 font-weight: bold;
                 font-size: 1.1em;
+                text-align: left;
+            }
+
+            #longpopup span.settingname2{
+                color: #e0aa6e;
+                font-size: 1em;
                 text-align: left;
             }
 
@@ -352,12 +405,12 @@ img.paiimg{
 }
 
 /* 押せるボタンはカーソルを変える */
-#paiTehai .paiimg, #all_pailist img, #tehai_make_button, #close_button, .menu_button, #yukohai_area .paiimg, #twitter_button, #longpopup .other_header{
+#paiTehai .paiimg:not(.shadow), #all_pailist img:not(.shadow), #tehai_make_button, #close_button, .menu_button, #yukohai_area .paiimg, #twitter_button, #longpopup .other_header{
     cursor: pointer;
 }
 
 /* 押せるボタンをホバーしている間は少し白っぽく表示させる */
-#paiTehai .paiimg:hover, #all_pailist img:hover, #tehai_make_button:hover, #close_button:hover, #yukohai_area .paiimg:hover{
+#paiTehai .paiimg:hover:not(.shadow), #all_pailist img:hover:not(.shadow), #tehai_make_button:hover, #close_button:hover, #yukohai_area .paiimg:hover{
     filter: brightness(130%);
 }
 
