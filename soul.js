@@ -146,14 +146,14 @@ function tumokohocheck() {
 // 有効牌を表示
 function yukohai_output(tablelist) {
     if (debug) console.log(tablelist);
-    // 良形変化込でソートしつつ良形変化用の手牌フラグを作成
+    // 受入良化込でソートしつつ受入良化用の手牌フラグを作成
     tablelist_sort(tablelist);
     for (var id = 0; id < tablelist[0].length; id++){
         // 最初に良形手替わりになる牌を探す
         var yukopais = "", ryokepais = "";
         // 打牌のヘッダー
         var header = "<tr class='table_header'><td>打：" + "<img class='paiimg pai" + tablelist[0][id].css + "' src='./pie_img/" + tablelist[0][id].img + ".png'><br>有効牌：" + tablelist[0][id].typecount + "種" + tablelist[0][id].nocount + "枚";
-        if (settings.ryokedisp) header += " / 良形変化：" + tablelist[0][id].ryoketypecount + "種" + tablelist[0][id].ryokenocount + "枚";
+        if (settings.ryokedisp) header += " / 受入良化：" + tablelist[0][id].ryoketypecount + "種" + tablelist[0][id].ryokenocount + "枚";
         $("#yukotable").append(header + "</td></tr>");
         if (!settings.yukodisp) continue;
         for (var paiType = 0; paiType < 4; paiType++) {
@@ -161,13 +161,13 @@ function yukohai_output(tablelist) {
                 if (settings.order) {
                     // 有効牌画像を追加
                     if (tablelist[1][tablelist[0][id].index][paiType][paiNo]) yukopais += "<img class='paiimg pai" + paiType + paiNo + "' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
-                    if (!settings.ryokedisp) continue; // 良形変化牌表示しない
+                    if (!settings.ryokedisp) continue; // 受入良化牌表示しない
                     // 良形手替わり牌を追加
                     if (tablelist[0][id].ryoketehai[paiType][paiNo]) ryokepais += "<img class='paiimg pai" + paiType + paiNo + " ryoke' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
                 } else {
                     // 有効牌画像を追加
                     if (tablelist[1][tablelist[0][id].index][paiType][paiNo]) yukopais += "<img class='paiimg pai" + paiType + paiNo + "' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
-                    if (!settings.ryokedisp) continue; // 良形変化牌表示しない
+                    if (!settings.ryokedisp) continue; // 受入良化牌表示しない
                     // 良形手替わり牌を追加
                     if (tablelist[0][id].ryoketehai[paiType][paiNo]) yukopais += "<img class='paiimg pai" + paiType + paiNo + " ryoke' src='./pie_img/" + paiImg[paiType][paiNo].src + "'>";
                 }
@@ -180,10 +180,10 @@ function yukohai_output(tablelist) {
     }
 }
 
-// もう一つ先の手牌も評価して良形変化となるかをチェックする
+// もう一つ先の手牌も評価して受入良化となるかをチェックする
 function nextmain_process(min_syanten, pais, usedpaitype, daType, daNo) {
     var list = [];
-    // 有効牌確認後、ツモによって良形変化する牌があるかチェック
+    // 有効牌確認後、ツモによって受入良化する牌があるかチェック
     for (var paiType = 0; paiType < 4; paiType++) {
         // その牌種が1つもない場合はせいぜい良くて単騎待ちで明白なので、処理軽減を優先してカットする
         if (debug) console.log("牌種", paiType, "使用可否", usedpaitype[paiType]);
@@ -191,7 +191,7 @@ function nextmain_process(min_syanten, pais, usedpaitype, daType, daNo) {
         for (var paiNo = 1; paiNo < 10; paiNo++) {
             if (paiType == 3 && (paiNo > 7 || paiNo == 0)) continue;
             if ((paiType == daType && paiNo == daNo)) continue; // 打牌をまたツモるのは不要
-            // ツモ候補がない場合は全部、ある場合は孤立単騎待ちの良形変化以外を全て抽出
+            // ツモ候補がない場合は全部、ある場合は孤立単騎待ちの受入良化以外を全て抽出
             var tablelist = [[], {}];
             tehai[paiType][paiNo]++;
             if (debug) console.log("**********ツモ", paiImg[paiType][paiNo].paiName);
@@ -222,7 +222,7 @@ function nextmain_process(min_syanten, pais, usedpaitype, daType, daNo) {
 // 良形手替わり牌も全部ひっくるめてソートを掛ける
 function tablelist_sort(t) {
     t[0].sort(function (a, b) {
-        // 有効牌枚数＞有効牌種枚数＞良形変化枚数＞良形変化牌種
+        // 有効牌枚数＞有効牌種枚数＞受入良化枚数＞受入良化牌種
         return b.nocount - a.nocount || b.typecount - a.typecount;
     });
     if (!settings.ryokedisp) return; // 表示しない
@@ -238,7 +238,7 @@ function tablelist_sort(t) {
         ];
         var tempTehai = JSON.parse(JSON.stringify(tehai)); // 赤牌なしにする
         moveReddora(tempTehai);
-        // 良形変化の枚数チェック
+        // 受入良化の枚数チェック
         for (var pai = 0; pai < t[0][id].ryokelist.length; pai++) {
             let pais = t[0][id].ryokelist[pai].index.split("");
             if (debug) console.log("打:", t[0][id].img, "ツモ:", t[0][id].ryokelist[pai].img);
@@ -260,7 +260,7 @@ function tablelist_sort(t) {
     }
     // tablelist[0].sort((a, b) => b.nocount - a.nocount || b.typecount - a.typecount); // ES2015のみ(IE11非対応)
     t[0].sort(function (a, b) {
-        // 有効牌枚数＞有効牌種枚数＞良形変化枚数＞良形変化牌種
+        // 有効牌枚数＞有効牌種枚数＞受入良化枚数＞受入良化牌種
         return b.nocount - a.nocount || b.typecount - a.typecount || b.ryokenocount - a.ryokenocount || b.ryoketypecount - a.ryoketypecount;
     });
 }
@@ -517,7 +517,7 @@ $(document).on("click", "#paiTehai .paiimg, #yukohai_area tr:nth-of-type(2n+1) i
     }
 });
 
-// 有効牌、良形変化牌を直接選択したら打牌しつつその牌をツモる
+// 有効牌、受入良化牌を直接選択したら打牌しつつその牌をツモる
 $(document).on("click", "#yukohai_area tr:nth-of-type(2n) img", function () {
     // ポップアップが表示されている時はただ消す
     var pais = tehai_calc_reload();
@@ -560,19 +560,53 @@ $(document).on("click", "#yukohai_area tr:nth-of-type(2n) img", function () {
 // Twitterに何切るを簡易投稿
 function twitter_post() { // 23457m2455p2467s6p335m1145p223577s1p
     // 改行「%0D%0A」半角スペース「%2C」左鉤括弧「%E3%80%8C」右鉤括弧「%E3%80%8D」
+    var tweet_tehai = exchange_txt_to_tweet(tehai_txt);
     if (tehai_txt == "") {
         alert("手牌が入力されている場合のみ投稿できます");
         return;
+    } else if (tweet_tehai == "NG") {
+        alert("手牌が2枚、5枚、8枚、11枚、14枚の場合のみ投稿できます");
+        return;
     }
     var link = "%0D%0Ahttps://hako2d-mj.xii.jp/mahjong_tool/soul.html?" + tehai_txt + "%0D%0A";
-    var text = "何を切る？%0D%0A%E3%80%8C" + tehai_txt + "%E3%80%8D";
-    var hash = "麻雀%2C何切る%2C雀魂";
+    var text = "何を切る？%0D%0A%E3%80%8C" + tweet_tehai + "%E3%80%8D";
+    var hash = "麻雀%2C何切る%2C雀魂%2C二次箱牌理ツール";
     var url = "https://twitter.com/share?";
     url += "url=" + link;
     url += "&text=" + text;
     url += "&hashtags=" + hash;
     window.open(url, "post_twitter");
 }
+
+function exchange_txt_to_tweet(tehai_txt) {
+    var pailist = exchange_txt_to_paiga(tehai_txt);
+    var paiType_to_txt = ["m", "p", "s", ""]; // 字牌は漢字に変換済みなので必要なし
+    var no_to_jihai = ["無", "東", "南", "西", "北", "白", "発", "中"];
+    var txt = "";
+    var t = pailist[0].reverse(), n = pailist[1].reverse();
+    var paiType = t[0];
+    for (var i = 0; i < t.length - 1; i++) {
+        // 種類が切り替わったら1つ前の記号を入れる
+        if (paiType != t[i]) {
+            txt += paiType_to_txt[t[i - 1]];
+            paiType = t[i];
+        }
+        if (paiType == 3) {
+            txt += no_to_jihai[n[i]];
+        } else {
+            txt += n[i] != 0 ? n[i] : "赤5";
+        }
+    }
+    if ([2, 5, 8, 11, 14].indexOf(t.length) < 0) return "NG";
+    // 最後の記号を付け足す
+    var last_paiType = t[t.length - 1];
+    // 赤5 -> 字牌 -> それ以外
+    txt += " ツモ";
+    txt += n[i] == 0 ? "赤5" : t[t.length - 1] == 3 ? no_to_jihai[n[n.length - 1]] : n[n.length - 1];
+    txt += paiType_to_txt[last_paiType];
+    return txt;
+}
+
 // ==============================================================
 // 各種設定する画面を構築
 function settings_Display() {
@@ -607,10 +641,10 @@ function setings_reload(elmName, flg) {
         if (elmName == "ripai" || elmName == "yukodisp"){
             settings[elmName] ? $("#" + name1).parent().addClass("check") : $("#" + name1).parent().removeClass("check");
             settings[elmName] ? $("#" + name0).parent().removeClass("check") : $("#" + name0).parent().addClass("check");
-        } else { // 良形変化牌は操作が連鎖しているので別途処理
+        } else { // 受入良化牌は操作が連鎖しているので別途処理
             settings[elmName] ? $("#" + name1).parent().addClass("check") : $("#" + name1).parent().removeClass("check");
             settings[elmName] ? $("#" + name0).parent().removeClass("check") : $("#" + name0).parent().addClass("check");
-            // 良形変化牌を表示しない時は有効牌と分けるかのチェックボックスを無効にする
+            // 受入良化牌を表示しない時は有効牌と分けるかのチェックボックスを無効にする
             if (settings.ryokedisp) { // 有効
                 $("form input[name=order]").prop("disabled", false);
                 settings.order ? $("#order1").parent().addClass("check") : $("#order0").parent().addClass("check");
@@ -822,4 +856,8 @@ function wide_display(h, w) {
 
 $(window).on('orientationchange resize', function () { // 画面回転
         window_orientationchange();
+});
+
+$(document).on("contextmenu", "img", function () {
+    return false;
 });
