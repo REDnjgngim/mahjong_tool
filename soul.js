@@ -692,22 +692,27 @@ $(document).on('input', '#tehaitxt', function () {
 function tehai_reload() {
     // 自動理牌の配列を生成
     var pais = tehai_calc_reload(); // 所持手牌の更新は必ずする
+    var paiList = "";
     if (!settings.ripai) return;
-    var txt_to_paiType = { m: 0, p: 1, s: 2, z: 3 };
-    var t_txt = tehai_txt;
-    // if ([2, 5, 8, 11, 14].includes(pais)) { // ES2015のみ(IE11非対応)
-    if ([2, 5, 8, 11, 14].indexOf(pais) >= 0) {
-        // ツモは右端固定にするため別処理
-        t_txt = tehai_txt.slice(0, -2);
-        // var [tumoNo, tumoType] = tehai_txt.slice(-2).split(""); // ES2015のみ(IE11非対応)
-        var tumo = tehai_txt.slice(-2).split("");
-        if (!t_txt.match(/[mpsz]$/)) t_txt += tumo[1]; // 連番だった場合はpaiTypeをつけ直す
-    }
-    // var [paiTypelist, paiNolist] = exchange_txt_to_paiga(t_txt); // ES2015のみ(IE11非対応)
-    var paiList = exchange_txt_to_paiga(t_txt);
-    paiList = tehai_sort(paiList[0], paiList[1]);
-    $("#paiTehai").empty();
+    // if (settings.ripai){
+        var txt_to_paiType = { m: 0, p: 1, s: 2, z: 3 };
+        var t_txt = tehai_txt;
+        // if ([2, 5, 8, 11, 14].includes(pais)) { // ES2015のみ(IE11非対応)
+        if ([2, 5, 8, 11, 14].indexOf(pais) >= 0) {
+            // ツモは右端固定にするため別処理
+            t_txt = tehai_txt.slice(0, -2);
+            // var [tumoNo, tumoType] = tehai_txt.slice(-2).split(""); // ES2015のみ(IE11非対応)
+            var tumo = tehai_txt.slice(-2).split("");
+            if (!t_txt.match(/[mpsz]$/)) t_txt += tumo[1]; // 連番だった場合はpaiTypeをつけ直す
+        }
+        // var [paiTypelist, paiNolist] = exchange_txt_to_paiga(t_txt); // ES2015のみ(IE11非対応)
+        paiList = exchange_txt_to_paiga(t_txt);
+        paiList = tehai_sort(paiList[0], paiList[1]);
+    // } else {
+    //     paiList = exchange_txt_to_paiga(tehai_txt);
+    // }
     if (paiList[0].length && paiList[1].length) {
+        $("#paiTehai").empty();
         // ソートしてるのでそのまま画像を出力
         $("#paiTehai").append(paiimg_Output(paiList[0], paiList[1]));
         // テキストも整形して出力
@@ -1128,6 +1133,23 @@ function exchange_txt_to_paiga(t_txt) {
         // 14枚以上は勝手に切る
         if (paiTypelist.length >= 14) break;
     }
+    // 左から順に牌を追加するタイプ
+    // var addCount = 0;
+    // for (var i = 0; i < tehai_array.length; i++) {
+    //     // if (["m", "p", "s", "z"].includes(tehai_array[i])) { // ES2015のみ(IE11非対応)
+    //     if (["m", "p", "s", "z"].indexOf(tehai_array[i]) >= 0 && i > 0) {
+    //         paiType = txt_to_paiType[tehai_array[i]]; // 記号をindexに変換
+    //         for (let t = 0; t < addCount; t++){
+    //             paiTypelist.push(paiType);
+    //         }
+    //         addCount = 0;
+    //         if (paiTypelist.length >= 14) break;
+    //     } else if (/[0-9]/.test(tehai_array[i])) {
+    //         if (paiNolist.length >= 14) continue;
+    //         paiNolist.push(Number(tehai_array[i]));
+    //         addCount++;
+    //     }
+    // }
     return [paiTypelist, paiNolist];
 }
 
@@ -1221,7 +1243,16 @@ function window_load() {
     var param = location.search;
     if (param != "") {
         tehai_txt = param.slice(1);
+        // 理牌しない設定の対応前の暫定対応
+        if (!settings.ripai) {
+            var ripaiFlag = 1;
+            settings.ripai = 1;
+        }
         tehai_reload();
+        if (ripaiFlag) {
+            ripaiFlag = 0;
+            settings.ripai = 0;
+        }
         main_process();
     }
 }
@@ -1271,6 +1302,7 @@ function cookieSettings() {
             settings[cArray[0]] = cArray[1] == "true" ? true : false;
             continue;
         }
-        settings[cArray[0]] = /(1|true)/.test(cArray[1]) ? 1 : 0;
+        settings[cArray[0]] = (cArray[1] == 1 || cArray[1] == "true") ? 1 : 0;
+        // console.log(cArray[0], settings[cArray[0]]);
     }
 };
